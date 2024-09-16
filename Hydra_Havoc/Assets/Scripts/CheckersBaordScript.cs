@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.XR;
 using UnityEngine;
 
 public class CheckersBaordScript : MonoBehaviour
@@ -14,7 +15,12 @@ public class CheckersBaordScript : MonoBehaviour
     private Vector3 boardOffset = new Vector3(-4f, -0.7f, -4f);
     private Vector3 pieceOffset = new Vector3(0.5f, 0, .5f);
 
+    public bool isWhite; //might not need this variable
+    private bool isWhiteTurn;
+    private bool hasKilled;
+
     private PieceScript selectedPiece;
+    private List<PieceScript> forcedPieces;
 
     private Vector2 mouseOver;
     private Vector2 startDrag;
@@ -23,6 +29,8 @@ public class CheckersBaordScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isWhiteTurn = true;
+        forcedPieces = new List<PieceScript>();
         GenerateBaord();
     }
 
@@ -32,18 +40,21 @@ public class CheckersBaordScript : MonoBehaviour
 
         //Debug.Log(mouseOver);
 
-        int x = (int)mouseOver.x;
-        int y = (int)mouseOver.y;
+        if ((isWhite) ? isWhiteTurn : !isWhiteTurn)
+        {
+            int x = (int)mouseOver.x;
+            int y = (int)mouseOver.y;
 
-        if((Input.GetMouseButtonDown(0))) 
-            SelectPiece(x, y);
+            if (selectedPiece != null)
+                UpdatePieceDrag(selectedPiece);
 
-        if (Input.GetMouseButtonUp(0))
-            TryMove((int)startDrag.x,(int)startDrag.y, x, y);
+            if ((Input.GetMouseButtonDown(0)))
+                SelectPiece(x, y);
+
+            if (Input.GetMouseButtonUp(0))
+                TryMove((int)startDrag.x, (int)startDrag.y, x, y);
+        }
     }
-
-  
-
     private void UpdateMouseOver() 
     {
         if (!Camera.main)
@@ -65,24 +76,191 @@ public class CheckersBaordScript : MonoBehaviour
         }
 
     }
+    private void UpdatePieceDrag(PieceScript p)
+    {
+        if (!Camera.main)
+        {
+            Debug.Log("Unable to find main camera");
+            return;
+        }
+
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 25, LayerMask.GetMask("Board")))
+        {
+            p.transform.position = hit.point + Vector3.up;
+        }
+
+    }
 
     private void SelectPiece(int x, int y)
     { 
-        if(x < 0 || x > pieces.Length || y  < 0 || y > pieces.Length)
+        if(x < 0 || x > 8 || y  < 0 || y > 8)
             return;
         
         PieceScript p = pieces[x, y];
-        if (p != null)
+        if (p != null && p.isWhite == isWhite)
         {
-            selectedPiece = p;
-            startDrag = mouseOver;
-            Debug.Log(selectedPiece.name);
+            if (forcedPieces.Count == 0)
+            {
+                selectedPiece = p;
+                startDrag = mouseOver;
+                Debug.Log(selectedPiece.name);
+            }
+            else
+            {
+                // Look for the piece in our forced pieces list
+                if (forcedPieces.Find(fp => fp == p) == null)
+                    return;
+
+                selectedPiece = p;
+                startDrag = mouseOver;
+            }
         }
     }
-
     private void TryMove(int x1, int y1, int x2, int y2)
     {
-        MovePiece(selectedPiece, x2 , y2);
+        forcedPieces = ScanForPossibleMove();
+
+        //Might remove later
+        startDrag = new Vector2(x1, y1);
+        endDrag = new Vector2(x2, y2);
+        selectedPiece = pieces[x1, y1];
+
+
+        if (x2 < 0 || x2 >= 8 || y2 < 0 || y2 >= 8) //Checks if out of bounds
+        {
+            if (selectedPiece != null)
+                MovePiece(selectedPiece, x1, y1);
+
+            startDrag = Vector2.zero;
+            selectedPiece = null;
+            return;
+        }
+
+        if(selectedPiece != null) 
+        { 
+            if(endDrag == startDrag) //Checks if piece has not moved
+            { 
+                MovePiece(selectedPiece, x1, y1);
+                startDrag = Vector2.zero;
+                selectedPiece = null;
+                return;
+            }
+
+            //Checks if piece as made a valid move
+            if (selectedPiece.ValidMove(pieces, x1, y1, x2, y2))
+            {
+                //Check if we killed anything
+                if (MathF.Abs(x2 - x1) == 2)
+                {
+                    PieceScript p = pieces[(x1 + x2) / 2, (y1 + y2) / 2];
+                    if (p != null)
+                    {
+                        pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null;
+                        Destroy(p.gameObject);
+                        hasKilled = true;
+                    }
+                }
+
+                // Were we supposed to kill a piece?
+                if (forcedPieces.Count != 0 && !hasKilled)
+                {
+                    MovePiece(selectedPiece, x1, y1); //This block of code gets repated a lot
+                    startDrag = Vector2.zero;         //Should propably fix that later
+                    selectedPiece = null;
+                    return;
+                }
+
+                pieces[x2, y2] = selectedPiece;
+                pieces[x1, y1] = null;
+                MovePiece(selectedPiece, x2, y2);
+
+                EndTurn();
+            }
+            else 
+            {
+                MovePiece(selectedPiece, x1, y1);
+                startDrag = Vector2.zero;
+                selectedPiece = null;
+                return;
+            }
+        }
+    }
+    private void EndTurn()
+    {
+        int x = (int)endDrag.x;
+        int y = (int)endDrag.y;
+
+        //Promotes Pieces
+        if(selectedPiece != null) 
+        {
+            if (selectedPiece.isWhite && !selectedPiece.isKing && y == 7)
+            {
+                selectedPiece.isKing = true;
+                selectedPiece.transform.transform.Rotate(Vector3.right * 90); //change to something cooler later
+            }
+            else if (!selectedPiece.isWhite && !selectedPiece.isKing && y == 0)
+            {
+                selectedPiece.isKing = true;
+                selectedPiece.transform.transform.Rotate(Vector3.right * 90); //change to something cooler later
+            }
+        }
+
+        selectedPiece = null;
+        startDrag = Vector2.zero;
+
+        if (ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasKilled)
+            return;
+
+        isWhiteTurn = !isWhiteTurn;
+        isWhite = !isWhite;
+        hasKilled = false;
+        CheckVictory();
+    }
+    private void CheckVictory()
+    {
+        var ps = FindObjectsOfType<PieceScript>();
+        bool hasWhite = false, hasBlack = false;
+        for (int i = 0; i < ps.Length; i++)
+        {
+            if (ps[i].isWhite)
+                hasWhite = true;
+            else
+                hasBlack = true;
+        }
+
+        if (!hasWhite)
+            Victory(false);
+        if (!hasBlack) 
+            Victory(true);
+    }
+    private void Victory(bool isWhite)
+    {
+        if (isWhite)
+            Debug.Log("White team has won");
+        else
+            Debug.Log("White team has won");
+    }
+    private List<PieceScript> ScanForPossibleMove(PieceScript p, int x, int y)
+    {
+        forcedPieces = new List<PieceScript>();
+
+        if (pieces[x,y].IsForcedToMove(pieces, x, y))
+            forcedPieces.Add(pieces[x,y]);
+
+        return forcedPieces;
+    }
+    private List<PieceScript> ScanForPossibleMove()
+    {
+        forcedPieces = new List<PieceScript>();
+
+        // Check all the pieces
+        for (int i = 0; i < 8; i++) // Would have to chnage the "8" if the board size changes
+            for (int j = 0; j < 8; j++)
+                if (pieces[i,j] != null && pieces[i,j].isWhite == isWhiteTurn)
+                    if (pieces[i,j].IsForcedToMove(pieces, i , j))
+                        forcedPieces.Add(pieces[i,j]);
+        return forcedPieces;
     }
 
     private void GenerateBaord()
@@ -107,7 +285,6 @@ public class CheckersBaordScript : MonoBehaviour
             }
         }
     }
-
     private void GeneratePiece(int x, int y)
     { 
         //Generates Pieces
@@ -118,7 +295,6 @@ public class CheckersBaordScript : MonoBehaviour
         pieces[x, y] = p;
         MovePiece(p, x, y);
     }
-
     private void MovePiece(PieceScript p, int x, int y)
     { 
         //Movies pieces to there starting location
