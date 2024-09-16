@@ -18,6 +18,7 @@ public class CheckersBaordScript : MonoBehaviour
     public bool isWhite; //might not need this variable
     private bool isWhiteTurn;
     private bool hasKilled;
+    private bool hasWinner;
 
     private PieceScript selectedPiece;
     private List<PieceScript> forcedPieces;
@@ -37,7 +38,7 @@ public class CheckersBaordScript : MonoBehaviour
     private void Update()
     {
         UpdateMouseOver();
-
+        CheckVictory();
         //Debug.Log(mouseOver);
 
         if ((isWhite) ? isWhiteTurn : !isWhiteTurn)
@@ -159,6 +160,7 @@ public class CheckersBaordScript : MonoBehaviour
                         pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null;
                         Destroy(p.gameObject);
                         hasKilled = true;
+                        
                     }
                 }
 
@@ -215,7 +217,7 @@ public class CheckersBaordScript : MonoBehaviour
         isWhiteTurn = !isWhiteTurn;
         isWhite = !isWhite;
         hasKilled = false;
-        CheckVictory();
+        
     }
     private void CheckVictory()
     {
@@ -223,23 +225,40 @@ public class CheckersBaordScript : MonoBehaviour
         bool hasWhite = false, hasBlack = false;
         for (int i = 0; i < ps.Length; i++)
         {
+            //Debug.Log("checking for victory");
             if (ps[i].isWhite)
+            {
+                //Debug.Log("Check Here");
                 hasWhite = true;
+            }
             else
+            {
+                //Debug.Log("Checked Here too");
                 hasBlack = true;
+            }
         }
 
         if (!hasWhite)
+        {
             Victory(false);
-        if (!hasBlack) 
+        }
+        if (!hasBlack)
+        {
             Victory(true);
+        }
     }
     private void Victory(bool isWhite)
     {
-        if (isWhite)
-            Debug.Log("White team has won");
-        else
-            Debug.Log("White team has won");
+        if (!hasWinner)
+        {
+            if (isWhite)
+                Debug.Log("White team has won");
+            else
+                Debug.Log("Black team has won");
+
+            hasWinner = true;
+        }
+        
     }
     private List<PieceScript> ScanForPossibleMove(PieceScript p, int x, int y)
     {
