@@ -158,7 +158,10 @@ public class CheckersBaordScript : MonoBehaviour
                     if (p != null)
                     {
                         pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null;
-                        Destroy(p.gameObject);
+
+                        Destroy(p.gameObject); 
+
+                        //add challenge function here
                         hasKilled = true;
                         
                     }
@@ -259,6 +262,17 @@ public class CheckersBaordScript : MonoBehaviour
             hasWinner = true;
         }
         
+    }
+    private void Challenge()
+    {
+        /*
+        //Coin flip animation
+        if(random(0,1) == 0)
+            if(all opponet starting spaces are NOT taken up)
+                GeneratePiece(Location of oppents first open space)
+        else
+            remove oppents piece
+         */
     }
     private List<PieceScript> ScanForPossibleMove(PieceScript p, int x, int y)
     {
