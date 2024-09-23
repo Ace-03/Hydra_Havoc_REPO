@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+//using Unity.VisualScripting;
 //using UnityEditor.XR;
 using UnityEngine;
 
@@ -11,13 +11,17 @@ public class CheckersBaordScript : MonoBehaviour
 
     public GameObject whitePiecePrefab;
     public GameObject blackPiecePrefab;
+    public GameObject headsText;
+    public GameObject tailsText;
+    public GameObject whiteText;
+    public GameObject blackText;
 
     private Vector3 boardOffset = new Vector3(-4f, -0.7f, -4f);
     private Vector3 pieceOffset = new Vector3(0.5f, 0, .5f);
 
     public bool isWhite; //might not need this variable
     private bool isWhiteTurn;
-    private bool hasKilled;
+    public  bool hasKilled;
     private bool hasWinner;
 
     private PieceScript selectedPiece;
@@ -159,10 +163,11 @@ public class CheckersBaordScript : MonoBehaviour
                     {
                         pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null;
 
-                        Destroy(p.gameObject); 
+                        //Destroy(p.gameObject);
 
+                        Challenge(p);
                         //add challenge function here
-                        hasKilled = true;
+                        //hasKilled = true;
                         
                     }
                 }
@@ -220,6 +225,18 @@ public class CheckersBaordScript : MonoBehaviour
         isWhiteTurn = !isWhiteTurn;
         isWhite = !isWhite;
         hasKilled = false;
+        if (isWhiteTurn)
+        {
+            //Shows White turn
+            whiteText.SetActive(true);
+            blackText.SetActive(false);
+        }
+        else 
+        {
+            //Show Black turn
+            whiteText.SetActive(false);
+            blackText.SetActive(true);
+        }
         
     }
     private void CheckVictory()
@@ -263,16 +280,34 @@ public class CheckersBaordScript : MonoBehaviour
         }
         
     }
-    private void Challenge()
+    private void Challenge(PieceScript p)
     {
-        /*
+
         //Coin flip animation
-        if(random(0,1) == 0)
-            if(all opponet starting spaces are NOT taken up)
-                GeneratePiece(Location of oppents first open space)
+        int coinValue;
+        coinValue = UnityEngine.Random.Range(0, 2);
+        Debug.Log("Coin Value = " + coinValue);
+
+
+        if (coinValue == 1)
+        {
+            //Shows heads text
+            headsText.SetActive(true);
+            tailsText.SetActive(false);
+            //GeratePiece(location of oppents first open space)
+            //if(all opponet starting spaces are NOT taken up)
+        }
         else
-            remove oppents piece
-         */
+        {
+            //Shows tails text
+            headsText.SetActive(false);
+            tailsText.SetActive(true);
+            //remove oppents piece
+            Destroy(p.gameObject);
+            hasKilled = true;
+        }
+
+
     }
     private List<PieceScript> ScanForPossibleMove(PieceScript p, int x, int y)
     {
