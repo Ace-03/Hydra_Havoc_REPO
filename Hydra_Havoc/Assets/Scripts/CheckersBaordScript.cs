@@ -163,12 +163,9 @@ public class CheckersBaordScript : MonoBehaviour
                     {
                         pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null;
 
-                        //Destroy(p.gameObject);
-
                         Challenge(p);
-                        //add challenge function here
+                        //Destroy(p.gameObject);
                         //hasKilled = true;
-                        
                     }
                 }
 
