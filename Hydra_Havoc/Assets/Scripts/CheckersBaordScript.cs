@@ -21,7 +21,7 @@ public class CheckersBaordScript : MonoBehaviour
 
     public bool isWhite; //might not need this variable
     private bool isWhiteTurn;
-    public  bool hasKilled;
+    public  bool hasChallenged;
     private bool hasWinner;
 
     private PieceScript selectedPiece;
@@ -109,7 +109,7 @@ public class CheckersBaordScript : MonoBehaviour
             {
                 selectedPiece = p;
                 startDrag = mouseOver;
-                Debug.Log(selectedPiece.name);
+                //Debug.Log(selectedPiece.name);
             }
             else
             {
@@ -155,22 +155,20 @@ public class CheckersBaordScript : MonoBehaviour
             //Checks if piece as made a valid move
             if (selectedPiece.ValidMove(pieces, x1, y1, x2, y2))
             {
-                //Check if we killed anything
-                if (MathF.Abs(x2 - x1) == 2)
+                //Check if we challanged anything
+                if (MathF.Abs(x2 - x1) == 2) //if the change in the x value is great then 2, then we challanged something 
                 {
                     PieceScript p = pieces[(x1 + x2) / 2, (y1 + y2) / 2];
                     if (p != null)
                     {
-                        pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null;
-
-                        Challenge(p);
-                        //Destroy(p.gameObject);
-                        //hasKilled = true;
+                        //pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null;
+                        
+                        Challenge(p, pieces);
                     }
                 }
 
-                // Were we supposed to kill a piece?
-                if (forcedPieces.Count != 0 && !hasKilled)
+                // Were we supposed to challenge a piece?
+                if (forcedPieces.Count != 0 && !hasChallenged)
                 {
                     MovePiece(selectedPiece, x1, y1); //This block of code gets repated a lot
                     startDrag = Vector2.zero;         //Should propably fix that later
@@ -216,12 +214,12 @@ public class CheckersBaordScript : MonoBehaviour
         selectedPiece = null;
         startDrag = Vector2.zero;
 
-        if (ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasKilled)
+        if (ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasChallenged)
             return;
 
         isWhiteTurn = !isWhiteTurn;
         isWhite = !isWhite;
-        hasKilled = false;
+        hasChallenged = false;
         if (isWhiteTurn)
         {
             //Shows White turn
@@ -277,22 +275,22 @@ public class CheckersBaordScript : MonoBehaviour
         }
         
     }
-    private void Challenge(PieceScript p)
+    private void Challenge(PieceScript p, PieceScript[,] piece)
     {
-
-        //Coin flip animation
+        //Insert coin flip animation here
         int coinValue;
         coinValue = UnityEngine.Random.Range(0, 2);
-        Debug.Log("Coin Value = " + coinValue);
-
+        //Debug.Log("Coin Value = " + coinValue);
 
         if (coinValue == 1)
         {
             //Shows heads text
             headsText.SetActive(true);
             tailsText.SetActive(false);
-            //GeratePiece(location of oppents first open space)
-            //if(all opponet starting spaces are NOT taken up)
+            hasChallenged = true;
+
+            AddBounusPiece(piece);
+            
         }
         else
         {
@@ -301,11 +299,15 @@ public class CheckersBaordScript : MonoBehaviour
             tailsText.SetActive(true);
             //remove oppents piece
             Destroy(p.gameObject);
-            hasKilled = true;
+            p = null;
+            hasChallenged = true;
         }
 
 
     }
+
+    
+
     private List<PieceScript> ScanForPossibleMove(PieceScript p, int x, int y)
     {
         forcedPieces = new List<PieceScript>();
@@ -359,6 +361,42 @@ public class CheckersBaordScript : MonoBehaviour
         PieceScript p = go.GetComponent<PieceScript>();
         pieces[x, y] = p;
         MovePiece(p, x, y);
+    }
+    private void AddBounusPiece(PieceScript[,] piece)
+    {
+        //check if opponets botton-most left-most space is open
+        //keep moving up in space untill an open space if found
+        //GeratePiece(location of oppents first open space)
+        if (!isWhiteTurn)
+        {
+            for (int y = 0; y < 3; y++)
+            {
+                bool oddRow = (y % 2 == 0);
+                for (int x = 0; x < 8; x += 2)
+                {
+                    if (piece[(oddRow) ? x : x + 1, y] == null)
+                    {
+                        GeneratePiece((oddRow) ? x : x + 1, y);
+                        return;
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int y = 7; y > 4; y--)
+            {
+                bool oddRow = (y % 2 == 0);
+                for (int x = 0; x < 8; x += 2)
+                {
+                    if (piece[(oddRow) ? x : x + 1, y] == null)
+                    {
+                        GeneratePiece((oddRow) ? x : x + 1, y);
+                        return;
+                    }
+                }
+            }
+        }
     }
     private void MovePiece(PieceScript p, int x, int y)
     { 
