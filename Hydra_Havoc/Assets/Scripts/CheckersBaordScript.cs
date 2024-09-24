@@ -161,8 +161,7 @@ public class CheckersBaordScript : MonoBehaviour
                     PieceScript p = pieces[(x1 + x2) / 2, (y1 + y2) / 2];
                     if (p != null)
                     {
-                        //pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null;
-                        
+                        //pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null; old code
                         Challenge(p, pieces);
                     }
                 }
@@ -290,7 +289,6 @@ public class CheckersBaordScript : MonoBehaviour
             hasChallenged = true;
 
             AddBounusPiece(piece);
-            
         }
         else
         {
