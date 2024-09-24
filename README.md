@@ -1,6 +1,25 @@
 # Hydra_Havoc_REPO
 https://ace-03.github.io/Hydra_Havoc_REPO/
+________________________________________________________________________________________________________________
+Hydra Havoc v0.02-
+________________________________________________________________________________________________________________
+New Features-
 
+    -Added coin flip feature.
+
+    -Added piece duplication function.
+
+Know Bugs-
+
+    -(still) When a piece is in king mode and it can capture multiple pieces in one turn,
+     it does no get forced to caputre a piece on it's second hop and can move freely around the board.
+     
+    -When a piece challanges an oppents piece and the oppent get heads, if the first piece lands in the oppents 
+     "zone" and the oppent get heads, the new oppents piece can spawn on top of the first players piece.
+
+    -Movement of king piece plus the piece duplictaion fuction seems to cause many problems (needs 
+    more testing).
+________________________________________________________________________________________________________________
 Hydra Havoc v0.01-
 ________________________________________________________________________________________________________________
 New Features-
@@ -12,4 +31,4 @@ New Features-
 Known Bugs-
     
     -When a piece is in king mode and it can capture multiple pieces in one turn,
-     it does no get forced to caputre a piece on it's second hop and can move freely around the board
+     it does no get forced to caputre a piece on it's second hop and can move freely around the board.
