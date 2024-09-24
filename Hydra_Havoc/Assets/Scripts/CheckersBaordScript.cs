@@ -366,7 +366,7 @@ public class CheckersBaordScript : MonoBehaviour
     {
         //check if opponets botton-most left-most space is open
         //keep moving up in space untill an open space if found
-        //GeratePiece(location of oppents first open space)
+        //then GeratePiece(location of oppents first open space)
         if (!isWhiteTurn)
         {
             for (int y = 0; y < 3; y++)
