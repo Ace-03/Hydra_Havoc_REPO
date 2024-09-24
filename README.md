@@ -14,8 +14,9 @@ Know Bugs-
     -(still) When a piece is in king mode and it can capture multiple pieces in one turn,
      it does no get forced to caputre a piece on it's second hop and can move freely around the board.
      
-    -When a piece challanges an oppents piece and the oppent get heads, if the first piece lands in the oppents 
-     "zone" and the oppent get heads, the new oppents piece can spawn on top of the first players piece.
+    -When a piece challanges an oppents piece and the oppent get heads, if the first piece lands in the 
+    oppents "zone" and the oppent get heads, the new oppents piece can spawn on top of the first 
+    players piece.
 
     -Movement of king piece plus the piece duplictaion fuction seems to cause many problems (needs 
     more testing).
@@ -26,7 +27,8 @@ New Features-
 
     -Created a place holder board and checkers pieces.
     
-    -Add functionality for a basic game of checker, with the house rule that you must capture a piece if possible.
+    -Add functionality for a basic game of checker, with the house rule that you must capture a piece 
+    if possible.
 
 Known Bugs-
     
