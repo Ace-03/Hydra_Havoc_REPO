@@ -97,6 +97,8 @@ public class CheckersBaordScript : MonoBehaviour
 
     }
 
+
+
     private void SelectPiece(int x, int y)
     { 
         if(x < 0 || x > 8 || y  < 0 || y > 8)
@@ -155,13 +157,14 @@ public class CheckersBaordScript : MonoBehaviour
             //Checks if piece as made a valid move
             if (selectedPiece.ValidMove(pieces, x1, y1, x2, y2))
             {
-                //Check if we challanged anything
+                //Check if we challenged anything
                 if (MathF.Abs(x2 - x1) == 2) //if the change in the x value is great then 2, then we challanged something 
                 {
                     PieceScript p = pieces[(x1 + x2) / 2, (y1 + y2) / 2];
                     if (p != null)
                     {
                         //pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null; old code
+                        MovePiece(selectedPiece, x1, y1);
                         Challenge(p, pieces);
                     }
                 }
@@ -278,7 +281,7 @@ public class CheckersBaordScript : MonoBehaviour
     {
         //Insert coin flip animation here
         int coinValue;
-        coinValue = UnityEngine.Random.Range(0, 2);
+        coinValue = UnityEngine.Random.Range(1, 2); //changes this back to (0,2) later
         //Debug.Log("Coin Value = " + coinValue);
 
         if (coinValue == 1)
@@ -288,7 +291,10 @@ public class CheckersBaordScript : MonoBehaviour
             tailsText.SetActive(false);
             hasChallenged = true;
 
+           
+
             AddBounusPiece(piece);
+            
         }
         else
         {
@@ -372,6 +378,7 @@ public class CheckersBaordScript : MonoBehaviour
                 bool oddRow = (y % 2 == 0);
                 for (int x = 0; x < 8; x += 2)
                 {
+                    Debug.Log(piece[x, y]);
                     if (piece[(oddRow) ? x : x + 1, y] == null)
                     {
                         GeneratePiece((oddRow) ? x : x + 1, y);
@@ -387,6 +394,7 @@ public class CheckersBaordScript : MonoBehaviour
                 bool oddRow = (y % 2 == 0);
                 for (int x = 0; x < 8; x += 2)
                 {
+                    Debug.Log(piece[x, y]);
                     if (piece[(oddRow) ? x : x + 1, y] == null)
                     {
                         GeneratePiece((oddRow) ? x : x + 1, y);
