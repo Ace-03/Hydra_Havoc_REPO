@@ -348,7 +348,7 @@ public class CheckersBaordScript : MonoBehaviour
     private void GenerateBaord()
     { 
         //Generate White Side
-        for(int y = 0; y < 2; y++) // change back to y < 3 later
+        for(int y = 0; y < 3; y++) // change back to y < 3 later
         { 
             bool oddRow = (y % 2 == 0);
             for (int x = 0; x < 8; x += 2) 
