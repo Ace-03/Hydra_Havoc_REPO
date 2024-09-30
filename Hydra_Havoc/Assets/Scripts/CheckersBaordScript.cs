@@ -164,7 +164,10 @@ public class CheckersBaordScript : MonoBehaviour
                     if (p != null)
                     {
                         //pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null; old code
+                        //Debug.Log("Selected = " +selectedPiece);
+                        //Debug.Log("P = " + p);
                         MovePiece(selectedPiece, x1, y1);
+                        Debug.Log("Pieces = " + pieces[7, 5]);
                         Challenge(p, pieces);
                     }
                 }
@@ -291,8 +294,6 @@ public class CheckersBaordScript : MonoBehaviour
             tailsText.SetActive(false);
             hasChallenged = true;
 
-           
-
             AddBounusPiece(piece);
             
         }
@@ -378,7 +379,7 @@ public class CheckersBaordScript : MonoBehaviour
                 bool oddRow = (y % 2 == 0);
                 for (int x = 0; x < 8; x += 2)
                 {
-                    Debug.Log(piece[x, y]);
+                    //Debug.Log(piece[x, y]);
                     if (piece[(oddRow) ? x : x + 1, y] == null)
                     {
                         GeneratePiece((oddRow) ? x : x + 1, y);
@@ -394,7 +395,7 @@ public class CheckersBaordScript : MonoBehaviour
                 bool oddRow = (y % 2 == 0);
                 for (int x = 0; x < 8; x += 2)
                 {
-                    Debug.Log(piece[x, y]);
+                    //Debug.Log(piece[x, y]);
                     if (piece[(oddRow) ? x : x + 1, y] == null)
                     {
                         GeneratePiece((oddRow) ? x : x + 1, y);
