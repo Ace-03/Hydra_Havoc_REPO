@@ -1,6 +1,8 @@
 using System;
 //using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
 //using Unity.VisualScripting;
 //using UnityEditor.XR;
 using UnityEngine;
@@ -15,6 +17,8 @@ public class CheckersBaordScript : MonoBehaviour
     public GameObject tailsText;
     public GameObject whiteText;
     public GameObject blackText;
+    public GameObject whiteWin;
+    public GameObject blackWin;
 
     private Vector3 boardOffset = new Vector3(-4f, -0.7f, -4f);
     private Vector3 pieceOffset = new Vector3(0.5f, 0, .5f);
@@ -160,14 +164,16 @@ public class CheckersBaordScript : MonoBehaviour
                 //Check if we challenged anything
                 if (MathF.Abs(x2 - x1) == 2) //if the change in the x value is great then 2, then we challanged something 
                 {
-                    PieceScript p = pieces[(x1 + x2) / 2, (y1 + y2) / 2];
+                    PieceScript p = pieces[(x1 + x2) / 2, (y1 + y2) / 2]; //this puts the piece we jumped over into it's own variable
+
                     if (p != null)
                     {
                         //pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null; old code
                         //Debug.Log("Selected = " +selectedPiece);
                         //Debug.Log("P = " + p);
                         MovePiece(selectedPiece, x1, y1);
-                        Debug.Log("Pieces = " + pieces[7, 5]);
+                        pieces[x2, y2] = selectedPiece;
+                        //Debug.Log("Pieces = " + pieces[7, 5]);
                         Challenge(p, pieces);
                     }
                 }
@@ -219,6 +225,7 @@ public class CheckersBaordScript : MonoBehaviour
         selectedPiece = null;
         startDrag = Vector2.zero;
 
+        Debug.Log("Possible moves check: " + (ScanForPossibleMove(selectedPiece, x, y).Count) + " " + hasChallenged);
         if (ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasChallenged)
             return;
 
@@ -272,9 +279,9 @@ public class CheckersBaordScript : MonoBehaviour
         if (!hasWinner)
         {
             if (isWhite)
-                Debug.Log("White team has won");
+                whiteWin.SetActive(true);
             else
-                Debug.Log("Black team has won");
+                blackWin.SetActive(true);
 
             hasWinner = true;
         }
@@ -284,7 +291,7 @@ public class CheckersBaordScript : MonoBehaviour
     {
         //Insert coin flip animation here
         int coinValue;
-        coinValue = UnityEngine.Random.Range(1, 2); //changes this back to (0,2) later
+        coinValue = UnityEngine.Random.Range(0, 1); //changes this back to (0,2) later
         //Debug.Log("Coin Value = " + coinValue);
 
         if (coinValue == 1)
@@ -320,6 +327,7 @@ public class CheckersBaordScript : MonoBehaviour
         if (pieces[x,y].IsForcedToMove(pieces, x, y))
             forcedPieces.Add(pieces[x,y]);
 
+        Debug.Log("Counter here = " + forcedPieces.Count);
         return forcedPieces;
     }
     private List<PieceScript> ScanForPossibleMove()
@@ -332,13 +340,15 @@ public class CheckersBaordScript : MonoBehaviour
                 if (pieces[i,j] != null && pieces[i,j].isWhite == isWhiteTurn)
                     if (pieces[i,j].IsForcedToMove(pieces, i , j))
                         forcedPieces.Add(pieces[i,j]);
+
+        Debug.Log("Counter there = " + forcedPieces.Count);
         return forcedPieces;
     }
 
     private void GenerateBaord()
     { 
         //Generate White Side
-        for(int y = 0; y < 3; y++) 
+        for(int y = 0; y < 2; y++) // change back to y < 3 later
         { 
             bool oddRow = (y % 2 == 0);
             for (int x = 0; x < 8; x += 2) 
@@ -407,7 +417,7 @@ public class CheckersBaordScript : MonoBehaviour
     }
     private void MovePiece(PieceScript p, int x, int y)
     { 
-        //Movies pieces to there starting location
+        //Movies pieces and keeps it in the center of it's square
         p.transform.position = (Vector3.right * x * 1f) + (Vector3.up) + (Vector3.forward * y * 1f) + boardOffset + pieceOffset;
     }
 
