@@ -291,7 +291,7 @@ public class CheckersBaordScript : MonoBehaviour
     {
         //Insert coin flip animation here
         int coinValue;
-        coinValue = UnityEngine.Random.Range(0, 1); //changes this back to (0,2) later
+        coinValue = UnityEngine.Random.Range(0, 2); //changes this back to (0,2) later
         //Debug.Log("Coin Value = " + coinValue);
 
         if (coinValue == 1)
