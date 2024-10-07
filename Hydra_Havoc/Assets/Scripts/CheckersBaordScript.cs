@@ -6,10 +6,12 @@ using System.Runtime.CompilerServices;
 //using Unity.VisualScripting;
 //using UnityEditor.XR;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CheckersBaordScript : MonoBehaviour
 {
     public PieceScript[,] pieces = new PieceScript[8, 8];
+    public PieceScript PIECE;
 
     public GameObject whitePiecePrefab;
     public GameObject blackPiecePrefab;
@@ -19,6 +21,7 @@ public class CheckersBaordScript : MonoBehaviour
     public GameObject blackText;
     public GameObject whiteWin;
     public GameObject blackWin;
+    public Button flipButton;
 
     private Vector3 boardOffset = new Vector3(-4f, -0.7f, -4f);
     private Vector3 pieceOffset = new Vector3(0.5f, 0, .5f);
@@ -165,6 +168,7 @@ public class CheckersBaordScript : MonoBehaviour
                 if (MathF.Abs(x2 - x1) == 2) //if the change in the x value is great then 2, then we challanged something 
                 {
                     PieceScript p = pieces[(x1 + x2) / 2, (y1 + y2) / 2]; //this puts the piece we jumped over into it's own variable
+                    PIECE = p;
 
                     if (p != null)
                     {
@@ -174,7 +178,8 @@ public class CheckersBaordScript : MonoBehaviour
                         MovePiece(selectedPiece, x1, y1);
                         pieces[x2, y2] = selectedPiece;
                         //Debug.Log("Pieces = " + pieces[7, 5]);
-                        Challenge(p, pieces);
+                        //Challenge(p, pieces);
+                        flipButton.interactable = true;
                     }
                 }
 
@@ -287,8 +292,10 @@ public class CheckersBaordScript : MonoBehaviour
         }
         
     }
-    private void Challenge(PieceScript p, PieceScript[,] piece)
+    private void Challenge()//PieceScript p, PieceScript[,] piece)
     {
+
+        
         //Insert coin flip animation here
         int coinValue;
         coinValue = UnityEngine.Random.Range(0, 2); //changes this back to (0,2) later
@@ -301,8 +308,8 @@ public class CheckersBaordScript : MonoBehaviour
             tailsText.SetActive(false);
             hasChallenged = true;
 
-            AddBounusPiece(piece);
-            
+            AddBounusPiece(pieces);
+
         }
         else
         {
@@ -310,14 +317,19 @@ public class CheckersBaordScript : MonoBehaviour
             headsText.SetActive(false);
             tailsText.SetActive(true);
             //remove oppents piece
-            Destroy(p.gameObject);
-            p = null;
+            Destroy(PIECE.gameObject);
+            PIECE = null;
             hasChallenged = true;
         }
 
 
     }
 
+    public void FlipCoin()
+    {
+        Challenge();
+        flipButton.interactable = false;
+    }
     
 
     private List<PieceScript> ScanForPossibleMove(PieceScript p, int x, int y)
@@ -390,7 +402,7 @@ public class CheckersBaordScript : MonoBehaviour
                 for (int x = 0; x < 8; x += 2)
                 {
                     //Debug.Log(piece[x, y]);
-                    if (piece[(oddRow) ? x : x + 1, y] == null)
+                    if (pieces[(oddRow) ? x : x + 1, y] == null)
                     {
                         GeneratePiece((oddRow) ? x : x + 1, y);
                         return;
@@ -406,7 +418,7 @@ public class CheckersBaordScript : MonoBehaviour
                 for (int x = 0; x < 8; x += 2)
                 {
                     //Debug.Log(piece[x, y]);
-                    if (piece[(oddRow) ? x : x + 1, y] == null)
+                    if (pieces[(oddRow) ? x : x + 1, y] == null)
                     {
                         GeneratePiece((oddRow) ? x : x + 1, y);
                         return;
