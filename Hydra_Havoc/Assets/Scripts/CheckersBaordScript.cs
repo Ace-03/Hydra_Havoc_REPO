@@ -38,6 +38,9 @@ public class CheckersBaordScript : MonoBehaviour
     private Vector2 startDrag;
     private Vector2 endDrag;
 
+
+    private GameObject focedToMove;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,7 +55,7 @@ public class CheckersBaordScript : MonoBehaviour
         CheckVictory();
         //Debug.Log(mouseOver);
 
-        if ((isWhite) ? isWhiteTurn : !isWhiteTurn)
+        if (((isWhite) ? isWhiteTurn : !isWhiteTurn) && !flipButton.interactable)
         {
             int x = (int)mouseOver.x;
             int y = (int)mouseOver.y;
@@ -178,7 +181,8 @@ public class CheckersBaordScript : MonoBehaviour
                         MovePiece(selectedPiece, x1, y1);
                         pieces[x2, y2] = selectedPiece;
                         //Debug.Log("Pieces = " + pieces[7, 5]);
-                        //Challenge(p, pieces);
+                        hasChallenged = true;
+                        //Challenge();
                         flipButton.interactable = true;
                     }
                 }
@@ -191,6 +195,7 @@ public class CheckersBaordScript : MonoBehaviour
                     selectedPiece = null;
                     return;
                 }
+
 
                 pieces[x2, y2] = selectedPiece;
                 pieces[x1, y1] = null;
@@ -230,7 +235,7 @@ public class CheckersBaordScript : MonoBehaviour
         selectedPiece = null;
         startDrag = Vector2.zero;
 
-        Debug.Log("Possible moves check: " + (ScanForPossibleMove(selectedPiece, x, y).Count) + " " + hasChallenged);
+        //Debug.Log("Possible moves check: " + (ScanForPossibleMove(selectedPiece, x, y).Count) + " " + hasChallenged);
         if (ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasChallenged)
             return;
 
@@ -294,8 +299,6 @@ public class CheckersBaordScript : MonoBehaviour
     }
     private void Challenge()//PieceScript p, PieceScript[,] piece)
     {
-
-        
         //Insert coin flip animation here
         int coinValue;
         coinValue = UnityEngine.Random.Range(0, 2); //changes this back to (0,2) later
@@ -306,10 +309,9 @@ public class CheckersBaordScript : MonoBehaviour
             //Shows heads text
             headsText.SetActive(true);
             tailsText.SetActive(false);
-            hasChallenged = true;
+            //hasChallenged = true;
 
             AddBounusPiece(pieces);
-
         }
         else
         {
@@ -319,10 +321,8 @@ public class CheckersBaordScript : MonoBehaviour
             //remove oppents piece
             Destroy(PIECE.gameObject);
             PIECE = null;
-            hasChallenged = true;
+            //hasChallenged = true;
         }
-
-
     }
 
     public void FlipCoin()
@@ -339,21 +339,28 @@ public class CheckersBaordScript : MonoBehaviour
         if (pieces[x,y].IsForcedToMove(pieces, x, y))
             forcedPieces.Add(pieces[x,y]);
 
-        Debug.Log("Counter here = " + forcedPieces.Count);
+        //Debug.Log("Counter here = " + forcedPieces.Count);
         return forcedPieces;
     }
     private List<PieceScript> ScanForPossibleMove()
     {
         forcedPieces = new List<PieceScript>();
 
+
         // Check all the pieces
         for (int i = 0; i < 8; i++) // Would have to chnage the "8" if the board size changes
             for (int j = 0; j < 8; j++)
-                if (pieces[i,j] != null && pieces[i,j].isWhite == isWhiteTurn)
-                    if (pieces[i,j].IsForcedToMove(pieces, i , j))
-                        forcedPieces.Add(pieces[i,j]);
+                if (pieces[i, j] != null && pieces[i, j].isWhite == isWhiteTurn)
+                    if (pieces[i, j].IsForcedToMove(pieces, i, j))
+                    {
+                        forcedPieces.Add(pieces[i, j]);
 
-        Debug.Log("Counter there = " + forcedPieces.Count);
+                        forcedPieces[0].transform.position = new Vector3(forcedPieces[0].transform.position.x, 2, forcedPieces[0].transform.position.z);
+                    }
+
+        //Debug.Log("Counter there = " + forcedPieces.Count);
+
+
         return forcedPieces;
     }
 
