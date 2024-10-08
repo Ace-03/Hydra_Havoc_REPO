@@ -9,7 +9,7 @@ New Features-
 
     -Added feature to show which piece is being forced to move
 
-Know Bugs-
+Known Bugs-
 
     -(still) When a piece is in king mode and it can capture multiple pieces in one turn,
      it does no get forced to caputre a piece on it's second hop and can move freely around the board.
@@ -26,7 +26,7 @@ New Features-
 
     -Added win screen.
 
-Know Bugs-
+Known Bugs-
 
     -(still) When a piece is in king mode and it can capture multiple pieces in one turn,
      it does no get forced to caputre a piece on it's second hop and can move freely around the board.
@@ -40,7 +40,7 @@ New Features-
 
     -Added piece duplication function.
 
-Know Bugs-
+Known Bugs-
 
     -(still) When a piece is in king mode and it can capture multiple pieces in one turn,
      it does no get forced to caputre a piece on it's second hop and can move freely around the board.
@@ -61,7 +61,7 @@ New Features-
     -Add functionality for a basic game of checker, with the house rule that you must capture a piece 
     if possible.
 
-Known Bugs-
+Knownn Bugs-
     
     -When a piece is in king mode and it can capture multiple pieces in one turn,
      it does no get forced to caputre a piece on it's second hop and can move freely around the board.
