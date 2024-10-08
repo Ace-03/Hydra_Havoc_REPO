@@ -1,6 +1,23 @@
 # Hydra_Havoc_REPO
 https://ace-03.github.io/Hydra_Havoc_REPO/
 ________________________________________________________________________________________________________________
+Hydra Havoc v0.04-
+________________________________________________________________________________________________________________
+New Features-
+
+    -Added Coin Flip Button
+
+    -Added feature to show which piece is being forced to move
+
+Know Bugs-
+
+    -(still) When a piece is in king mode and it can capture multiple pieces in one turn,
+     it does no get forced to caputre a piece on it's second hop and can move freely around the board.
+
+    -Piece that is not being forced to move sometimes gets stuck floating.
+
+    -Sometime the wrong side gets a new piece when the coin lands on Heads
+________________________________________________________________________________________________________________
 Hydra Havoc v0.03-
 ________________________________________________________________________________________________________________
 New Features-
