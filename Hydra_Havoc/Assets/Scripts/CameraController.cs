@@ -6,13 +6,11 @@ public class CameraController : MonoBehaviour
 {
     public CheckersBaordScript _board;
 
-    public Transform from;
-    public Transform to;
-    public float smoothFactor = 6f;
-
     private Quaternion _q1 = Quaternion.Euler(0, 0, 0);
     private Quaternion _q2 = Quaternion.Euler(0, 180, 0);
-  
+
+    public float smoothFactor = 6f;
+
     void FixedUpdate()
     {
         if (_board.isWhiteTurn)

@@ -1,7 +1,11 @@
 using System;
+using System.Collections;
+
 //using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
+
 
 //using Unity.VisualScripting;
 //using UnityEditor.XR;
@@ -30,6 +34,8 @@ public class CheckersBaordScript : MonoBehaviour
     public bool isWhiteTurn;
     public  bool hasChallenged;
     private bool hasWinner;
+
+    public float delay = 3f;
 
     private PieceScript selectedPiece;
     private List<PieceScript> forcedPieces;
@@ -355,13 +361,22 @@ public class CheckersBaordScript : MonoBehaviour
                     {
                         forcedPieces.Add(pieces[i, j]);
 
+                        //Vector3 newLoc = new Vector3(forcedPieces[0].transform.position.x, forcedPieces[0].transform.position.y + 2, forcedPieces[0].transform.position.z);
+                        //Vector3 oldLoc = new Vector3(forcedPieces[0].transform.position.x, forcedPieces[0].transform.position.y, forcedPieces[0].transform.position.z);
                         forcedPieces[0].transform.position = new Vector3(forcedPieces[0].transform.position.x, 2, forcedPieces[0].transform.position.z);
+                        //StartCoroutine(MovePiece(newLoc, oldLoc));
                     }
 
         //Debug.Log("Counter there = " + forcedPieces.Count);
 
 
         return forcedPieces;
+    }
+
+    IEnumerator MovePiece(Vector3 newLoc, Vector3 oldLoc)
+    {
+        forcedPieces[0].transform.position = Vector3.Lerp(oldLoc, newLoc, delay * Time.deltaTime);
+        yield return new WaitForSeconds(0.01f);
     }
 
     private void GenerateBaord()
