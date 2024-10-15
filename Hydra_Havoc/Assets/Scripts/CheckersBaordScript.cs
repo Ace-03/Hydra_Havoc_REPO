@@ -27,7 +27,7 @@ public class CheckersBaordScript : MonoBehaviour
     private Vector3 pieceOffset = new Vector3(0.5f, 0, .5f);
 
     public bool isWhite; //might not need this variable
-    private bool isWhiteTurn;
+    public bool isWhiteTurn;
     public  bool hasChallenged;
     private bool hasWinner;
 
