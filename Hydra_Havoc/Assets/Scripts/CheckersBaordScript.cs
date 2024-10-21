@@ -229,12 +229,12 @@ public class CheckersBaordScript : MonoBehaviour
             if (selectedPiece.isWhite && !selectedPiece.isKing && y == 7)
             {
                 selectedPiece.isKing = true;
-                selectedPiece.transform.transform.Rotate(Vector3.right * 90); //change to something cooler later
+                selectedPiece.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f); //change to something cooler later
             }
             else if (!selectedPiece.isWhite && !selectedPiece.isKing && y == 0)
             {
                 selectedPiece.isKing = true;
-                selectedPiece.transform.transform.Rotate(Vector3.right * 90); //change to something cooler later
+                selectedPiece.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f); //change to something cooler later
             }
         }
 
