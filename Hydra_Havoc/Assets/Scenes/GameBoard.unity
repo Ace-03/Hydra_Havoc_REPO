@@ -926,10 +926,7 @@ PrefabInstance:
     - {fileID: 5392398322951045289, guid: 9605ea7b89eb402438ad943db3578f26, type: 3}
     - {fileID: 8603541622604761643, guid: 9605ea7b89eb402438ad943db3578f26, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9605ea7b89eb402438ad943db3578f26, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1846167607}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9605ea7b89eb402438ad943db3578f26, type: 3}
 --- !u!1 &422471369
 GameObject:
@@ -5085,37 +5082,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1846167606 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9605ea7b89eb402438ad943db3578f26, type: 3}
-  m_PrefabInstance: {fileID: 356048963}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1846167607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1846167606}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e366285e5a4aee4db473f64a7994f01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PIECE: {fileID: 0}
-  whitePiecePrefab: {fileID: 9005660390136780635, guid: 6a10e2dc98e61064582af49d00ce1a8d, type: 3}
-  blackPiecePrefab: {fileID: 3898452661496555600, guid: a2911c7599a607844a309840ab3c0a26, type: 3}
-  headsText: {fileID: 666944663}
-  tailsText: {fileID: 506941742}
-  whiteText: {fileID: 1271054468}
-  blackText: {fileID: 2096291734}
-  whiteWin: {fileID: 637896143}
-  blackWin: {fileID: 1502722316}
-  flipButton: {fileID: 164870759}
-  isWhite: 1
-  isWhiteTurn: 0
-  hasChallenged: 0
-  delay: 3
 --- !u!1 &1902190401
 GameObject:
   m_ObjectHideFlags: 0
