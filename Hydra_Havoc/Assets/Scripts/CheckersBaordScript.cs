@@ -16,6 +16,7 @@ public class CheckersBaordScript : MonoBehaviour
 {
     public PieceScript[,] pieces = new PieceScript[8, 8];
     public PieceScript PIECE;
+    public PieceScript pieceLight;
 
     public GameObject whitePiecePrefab;
     public GameObject blackPiecePrefab;
@@ -34,6 +35,7 @@ public class CheckersBaordScript : MonoBehaviour
     public bool isWhiteTurn;
     public  bool hasChallenged;
     private bool hasWinner;
+    public bool lightOn;
 
     public float delay = 3f;
 
@@ -241,6 +243,11 @@ public class CheckersBaordScript : MonoBehaviour
         selectedPiece = null;
         startDrag = Vector2.zero;
 
+        if (lightOn)
+        {
+            pieceLight.transform.GetChild(0).gameObject.SetActive(false);
+            lightOn = false;
+        }
         //Debug.Log("Possible moves check: " + (ScanForPossibleMove(selectedPiece, x, y).Count) + " " + hasChallenged);
         if (ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasChallenged)
             return;
@@ -357,15 +364,21 @@ public class CheckersBaordScript : MonoBehaviour
         for (int i = 0; i < 8; i++) // Would have to chnage the "8" if the board size changes
             for (int j = 0; j < 8; j++)
                 if (pieces[i, j] != null && pieces[i, j].isWhite == isWhiteTurn)
+                {
                     if (pieces[i, j].IsForcedToMove(pieces, i, j))
                     {
                         forcedPieces.Add(pieces[i, j]);
 
                         //Vector3 newLoc = new Vector3(forcedPieces[0].transform.position.x, forcedPieces[0].transform.position.y + 2, forcedPieces[0].transform.position.z);
                         //Vector3 oldLoc = new Vector3(forcedPieces[0].transform.position.x, forcedPieces[0].transform.position.y, forcedPieces[0].transform.position.z);
-                        forcedPieces[0].transform.position = new Vector3(forcedPieces[0].transform.position.x, 2, forcedPieces[0].transform.position.z);
+                        //forcedPieces[0].transform.position = new Vector3(forcedPieces[0].transform.position.x, 2, forcedPieces[0].transform.position.z);
+                        forcedPieces[0].transform.GetChild(0).gameObject.SetActive(true);
+                        pieceLight = forcedPieces[0];
+                        lightOn = true;
                         //StartCoroutine(MovePiece(newLoc, oldLoc));
                     }
+                }
+                    
 
         //Debug.Log("Counter there = " + forcedPieces.Count);
 

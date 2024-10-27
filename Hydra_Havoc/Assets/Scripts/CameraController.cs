@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
     private Quaternion _q1 = Quaternion.Euler(0, 0, 0);
     private Quaternion _q2 = Quaternion.Euler(0, 180, 0);
 
-    public float smoothFactor = 6f;
+    public float smoothFactor = 10f;
 
     void FixedUpdate()
     {
