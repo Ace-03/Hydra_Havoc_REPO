@@ -243,11 +243,15 @@ public class CheckersBaordScript : MonoBehaviour
         selectedPiece = null;
         startDrag = Vector2.zero;
 
-        if (lightOn)
-        {
-            pieceLight.transform.GetChild(0).gameObject.SetActive(false);
-            lightOn = false;
-        }
+
+        for (int i = 0; i < 8; i++) // Checks entire array of pieces and turns off all there lights
+            for (int j = 0; j < 8; j++)
+                if (pieces[i, j] != null && pieces[i, j].isWhite == isWhiteTurn)
+                    if (pieces[i,j].transform.GetChild(0).gameObject.active)
+                    {
+                        pieces[i,j].transform.GetChild(0).gameObject.SetActive(false);
+                        //lightOn = false;
+                    }
         //Debug.Log("Possible moves check: " + (ScanForPossibleMove(selectedPiece, x, y).Count) + " " + hasChallenged);
         if (ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasChallenged)
             return;
@@ -373,8 +377,8 @@ public class CheckersBaordScript : MonoBehaviour
                         //Vector3 oldLoc = new Vector3(forcedPieces[0].transform.position.x, forcedPieces[0].transform.position.y, forcedPieces[0].transform.position.z);
                         //forcedPieces[0].transform.position = new Vector3(forcedPieces[0].transform.position.x, 2, forcedPieces[0].transform.position.z);
                         forcedPieces[0].transform.GetChild(0).gameObject.SetActive(true);
-                        pieceLight = forcedPieces[0];
-                        lightOn = true;
+                        //pieceLight = forcedPieces[0];
+                        //lightOn = true;
                         //StartCoroutine(MovePiece(newLoc, oldLoc));
                     }
                 }

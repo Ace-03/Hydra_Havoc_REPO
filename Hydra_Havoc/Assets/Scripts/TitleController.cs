@@ -3,19 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TitleController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Image tutorial;
+
+    private void Start()
     {
-        
+        tutorial = GetComponent<Image>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void OpenTutorial()
+    { 
+        tutorial.enabled = true;
     }
 
     public void StartGame()
