@@ -18,6 +18,8 @@ public class CheckersBaordScript : MonoBehaviour
     public PieceScript PIECE;
     public PieceScript pieceLight;
 
+    public CoinController coin;
+
     public GameObject whitePiecePrefab;
     public GameObject blackPiecePrefab;
     public GameObject headsText;
@@ -26,6 +28,7 @@ public class CheckersBaordScript : MonoBehaviour
     public GameObject blackText;
     public GameObject whiteWin;
     public GameObject blackWin;
+    
     public Button flipButton;
 
     private Vector3 boardOffset = new Vector3(-4f, -0.7f, -4f);
@@ -36,6 +39,8 @@ public class CheckersBaordScript : MonoBehaviour
     public  bool hasChallenged;
     private bool hasWinner;
     public bool lightOn;
+    public bool heads;
+    public bool tails;
 
     public float delay = 3f;
 
@@ -256,6 +261,8 @@ public class CheckersBaordScript : MonoBehaviour
         if (ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasChallenged)
             return;
 
+        coin.transform.position = new Vector3(7, -0.7f, 0); //puts the coin back in it's starting position
+
         isWhiteTurn = !isWhiteTurn;
         isWhite = !isWhite;
         hasChallenged = false;
@@ -314,40 +321,48 @@ public class CheckersBaordScript : MonoBehaviour
         }
         
     }
-    private void Challenge()//PieceScript p, PieceScript[,] piece)
+    public void Challenge()//PieceScript p, PieceScript[,] piece)
     {
         //Insert coin flip animation here
-        int coinValue;
-        coinValue = UnityEngine.Random.Range(0, 2); //changes this back to (0,2) later
+
+        
+
+        //int coinValue;
+        //coinValue = UnityEngine.Random.Range(0, 2); //changes this back to (0,2) later
         //Debug.Log("Coin Value = " + coinValue);
 
-        if (coinValue == 1)
+        if (heads)
         {
             //Shows heads text
             headsText.SetActive(true);
             tailsText.SetActive(false);
             //hasChallenged = true;
-
+            Debug.Log("Add piece");
             AddBounusPiece(pieces);
         }
-        else
+        else if(tails)
         {
             //Shows tails text
             headsText.SetActive(false);
             tailsText.SetActive(true);
             //remove oppents piece
+            Debug.Log("Desotry Piece");
             Destroy(PIECE.gameObject);
             PIECE = null;
             //hasChallenged = true;
         }
+
+        
     }
 
     public void FlipCoin()
     {
-        Challenge();
+        coin.Toss();
+
+
+
         flipButton.interactable = false;
     }
-    
 
     private List<PieceScript> ScanForPossibleMove(PieceScript p, int x, int y)
     {
