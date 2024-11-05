@@ -15,7 +15,9 @@ public class TailsScript : MonoBehaviour
         board.tails = true;
         board.Challenge();
 
+
         coin.transform.GetChild(0).gameObject.SetActive(false);
         coin.transform.GetChild(1).gameObject.SetActive(false);
+        board.coinFlipping = false;
     }
 }

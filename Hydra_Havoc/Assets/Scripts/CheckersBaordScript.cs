@@ -41,6 +41,7 @@ public class CheckersBaordScript : MonoBehaviour
     public bool lightOn;
     public bool heads;
     public bool tails;
+    public bool coinFlipping;
 
     public float delay = 3f;
 
@@ -68,7 +69,7 @@ public class CheckersBaordScript : MonoBehaviour
         CheckVictory();
         //Debug.Log(mouseOver);
 
-        if (((isWhite) ? isWhiteTurn : !isWhiteTurn) && !flipButton.interactable)
+        if (((isWhite) ? isWhiteTurn : !isWhiteTurn) && !flipButton.interactable && !coinFlipping)
         {
             int x = (int)mouseOver.x;
             int y = (int)mouseOver.y;
@@ -359,8 +360,7 @@ public class CheckersBaordScript : MonoBehaviour
     {
         coin.Toss();
 
-
-
+        coinFlipping = true;
         flipButton.interactable = false;
     }
 

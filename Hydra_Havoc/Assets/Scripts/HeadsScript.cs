@@ -17,5 +17,6 @@ public class HeadsScript : MonoBehaviour
 
         coin.transform.GetChild(0).gameObject.SetActive(false);
         coin.transform.GetChild(1).gameObject.SetActive(false);
+        board.coinFlipping = false;
     }
 }
