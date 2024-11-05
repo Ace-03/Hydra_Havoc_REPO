@@ -8,7 +8,7 @@ using TMPro;
 
 public class TitleController : MonoBehaviour
 {
-    public TextMeshProUGUI tutorial;
+    public GameObject tutorial;
 
     private void Start()
     {
@@ -18,7 +18,12 @@ public class TitleController : MonoBehaviour
     public void OpenTutorial()
     {
         Debug.Log("Tutorial");
-        tutorial.enabled = true;
+        tutorial.SetActive(true);
+    }
+
+    public void CloseTutorial()
+    { 
+        tutorial.SetActive(false);
     }
 
     public void StartGame()
