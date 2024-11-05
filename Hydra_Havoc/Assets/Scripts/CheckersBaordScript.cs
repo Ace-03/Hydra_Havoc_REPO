@@ -405,11 +405,13 @@ public class CheckersBaordScript : MonoBehaviour
         return forcedPieces;
     }
 
+    /*
     IEnumerator MovePiece(Vector3 newLoc, Vector3 oldLoc)
     {
         forcedPieces[0].transform.position = Vector3.Lerp(oldLoc, newLoc, delay * Time.deltaTime);
         yield return new WaitForSeconds(0.01f);
     }
+    */
 
     private void GenerateBaord()
     { 
@@ -448,7 +450,7 @@ public class CheckersBaordScript : MonoBehaviour
         //check if opponets botton-most left-most space is open
         //keep moving up in space untill an open space if found
         //then GeratePiece(location of oppents first open space)
-        if (!isWhiteTurn)
+        if (isWhiteTurn)
         {
             for (int y = 0; y < 3; y++)
             {
