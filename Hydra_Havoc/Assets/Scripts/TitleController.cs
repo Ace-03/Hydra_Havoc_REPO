@@ -4,18 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class TitleController : MonoBehaviour
 {
-    public Image tutorial;
+    public TextMeshProUGUI tutorial;
 
     private void Start()
     {
-        tutorial = GetComponent<Image>();
+
     }
 
     public void OpenTutorial()
-    { 
+    {
+        Debug.Log("Tutorial");
         tutorial.enabled = true;
     }
 
