@@ -42,6 +42,7 @@ public class CheckersBaordScript : MonoBehaviour
     public bool heads;
     public bool tails;
     public bool coinFlipping;
+    public bool forcedMoveActive = true;
 
     public float delay = 3f;
 
@@ -131,7 +132,7 @@ public class CheckersBaordScript : MonoBehaviour
         PieceScript p = pieces[x, y];
         if (p != null && p.isWhite == isWhite)
         {
-            if (forcedPieces.Count == 0)
+            if (forcedPieces.Count == 0 || !forcedMoveActive)
             {
                 selectedPiece = p;
                 startDrag = mouseOver;
@@ -189,14 +190,9 @@ public class CheckersBaordScript : MonoBehaviour
 
                     if (p != null)
                     {
-                        //pieces[(x1 + x2) / 2, (y1 + y2) / 2] = null; old code
-                        //Debug.Log("Selected = " +selectedPiece);
-                        //Debug.Log("P = " + p);
                         MovePiece(selectedPiece, x1, y1);
                         pieces[x2, y2] = selectedPiece;
-                        //Debug.Log("Pieces = " + pieces[7, 5]);
                         hasChallenged = true;
-                        //Challenge();
                         flipButton.interactable = true;
                     }
                 }
@@ -209,7 +205,6 @@ public class CheckersBaordScript : MonoBehaviour
                     selectedPiece = null;
                     return;
                 }
-
 
                 pieces[x2, y2] = selectedPiece;
                 pieces[x1, y1] = null;
@@ -324,14 +319,6 @@ public class CheckersBaordScript : MonoBehaviour
     }
     public void Challenge()//PieceScript p, PieceScript[,] piece)
     {
-        //Insert coin flip animation here
-
-        
-
-        //int coinValue;
-        //coinValue = UnityEngine.Random.Range(0, 2); //changes this back to (0,2) later
-        //Debug.Log("Coin Value = " + coinValue);
-
         if (heads)
         {
             //Shows heads text
@@ -387,31 +374,12 @@ public class CheckersBaordScript : MonoBehaviour
                     if (pieces[i, j].IsForcedToMove(pieces, i, j))
                     {
                         forcedPieces.Add(pieces[i, j]);
-
-                        //Vector3 newLoc = new Vector3(forcedPieces[0].transform.position.x, forcedPieces[0].transform.position.y + 2, forcedPieces[0].transform.position.z);
-                        //Vector3 oldLoc = new Vector3(forcedPieces[0].transform.position.x, forcedPieces[0].transform.position.y, forcedPieces[0].transform.position.z);
-                        //forcedPieces[0].transform.position = new Vector3(forcedPieces[0].transform.position.x, 2, forcedPieces[0].transform.position.z);
                         forcedPieces[0].transform.GetChild(0).gameObject.SetActive(true);
-                        //pieceLight = forcedPieces[0];
-                        //lightOn = true;
-                        //StartCoroutine(MovePiece(newLoc, oldLoc));
                     }
                 }
-                    
-
-        //Debug.Log("Counter there = " + forcedPieces.Count);
-
-
         return forcedPieces;
     }
 
-    /*
-    IEnumerator MovePiece(Vector3 newLoc, Vector3 oldLoc)
-    {
-        forcedPieces[0].transform.position = Vector3.Lerp(oldLoc, newLoc, delay * Time.deltaTime);
-        yield return new WaitForSeconds(0.01f);
-    }
-    */
 
     private void GenerateBaord()
     { 

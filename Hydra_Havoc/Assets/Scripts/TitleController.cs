@@ -10,11 +10,6 @@ public class TitleController : MonoBehaviour
 {
     public GameObject tutorial;
 
-    private void Start()
-    {
-
-    }
-
     public void OpenTutorial()
     {
         Debug.Log("Tutorial");
