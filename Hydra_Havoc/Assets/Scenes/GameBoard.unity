@@ -4483,6 +4483,7 @@ MonoBehaviour:
   lightOn: 0
   heads: 0
   tails: 0
+  coinFlipping: 0
   delay: 3
 --- !u!1 &1347002439
 GameObject:
