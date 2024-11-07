@@ -10,7 +10,7 @@ public class HeadsScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Heads");
+        //Debug.Log("Heads");
         board.heads = true;
         board.tails = false;
         board.Challenge();

@@ -190,6 +190,7 @@ public class CheckersBaordScript : MonoBehaviour
 
                     if (p != null)
                     {
+                        Debug.Log("Moved Piece");
                         MovePiece(selectedPiece, x1, y1);
                         pieces[x2, y2] = selectedPiece;
                         hasChallenged = true;
@@ -197,14 +198,17 @@ public class CheckersBaordScript : MonoBehaviour
                     }
                 }
 
-                // Were we supposed to challenge a piece?
-                if (forcedPieces.Count != 0 && !hasChallenged)
+                /* This is a check to see if forced move should have happened
+                 * but it seems to be uncessisary now
+                if (forcedPieces.Count != 0 && !hasChallenged) // Were we supposed to challenge a piece?
                 {
+                    Debug.Log("Moved this piece");
                     MovePiece(selectedPiece, x1, y1); //This block of code gets repated a lot
                     startDrag = Vector2.zero;         //Should propably fix that later
                     selectedPiece = null;
                     return;
                 }
+                */
 
                 pieces[x2, y2] = selectedPiece;
                 pieces[x1, y1] = null;
@@ -325,7 +329,7 @@ public class CheckersBaordScript : MonoBehaviour
             headsText.SetActive(true);
             tailsText.SetActive(false);
             //hasChallenged = true;
-            Debug.Log("Add piece");
+            //Debug.Log("Add piece");
             AddBounusPiece(pieces);
         }
         else if(tails)
@@ -334,7 +338,7 @@ public class CheckersBaordScript : MonoBehaviour
             headsText.SetActive(false);
             tailsText.SetActive(true);
             //remove oppents piece
-            Debug.Log("Desotry Piece");
+            //Debug.Log("Desotry Piece");
             Destroy(PIECE.gameObject);
             PIECE = null;
             //hasChallenged = true;

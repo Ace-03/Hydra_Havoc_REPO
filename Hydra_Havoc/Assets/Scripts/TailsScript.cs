@@ -10,7 +10,7 @@ public class TailsScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Tails");
+        //Debug.Log("Tails");
         board.heads = false;
         board.tails = true;
         board.Challenge();
