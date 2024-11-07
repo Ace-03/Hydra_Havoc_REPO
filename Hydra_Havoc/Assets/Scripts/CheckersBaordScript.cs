@@ -136,6 +136,10 @@ public class CheckersBaordScript : MonoBehaviour
             {
                 selectedPiece = p;
                 startDrag = mouseOver;
+
+                MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
+                mesh.enabled = false;
+
                 //Debug.Log(selectedPiece.name);
             }
             else
@@ -146,6 +150,9 @@ public class CheckersBaordScript : MonoBehaviour
 
                 selectedPiece = p;
                 startDrag = mouseOver;
+
+                MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
+                mesh.enabled = false;
             }
         }
     }
@@ -158,6 +165,11 @@ public class CheckersBaordScript : MonoBehaviour
         endDrag = new Vector2(x2, y2);
         selectedPiece = pieces[x1, y1];
 
+        Rigidbody rig = selectedPiece.GetComponent<Rigidbody>();
+        //rig.isKinematic = false;
+
+        MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
+        mesh.enabled = true;
 
         if (x2 < 0 || x2 >= 8 || y2 < 0 || y2 >= 8) //Checks if out of bounds
         {
