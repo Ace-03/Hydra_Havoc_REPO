@@ -28,7 +28,9 @@ public class CheckersBaordScript : MonoBehaviour
     public GameObject blackText;
     public GameObject whiteWin;
     public GameObject blackWin;
-    
+
+    public MeshCollider mesh;
+
     public Button flipButton;
 
     private Vector3 boardOffset = new Vector3(-4f, -0.7f, -4f);
@@ -137,8 +139,8 @@ public class CheckersBaordScript : MonoBehaviour
                 selectedPiece = p;
                 startDrag = mouseOver;
 
-                MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
-                mesh.enabled = false;
+                //MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
+                //mesh.enabled = false;
 
                 //Debug.Log(selectedPiece.name);
             }
@@ -151,9 +153,16 @@ public class CheckersBaordScript : MonoBehaviour
                 selectedPiece = p;
                 startDrag = mouseOver;
 
-                MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
-                mesh.enabled = false;
+
+                //MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
+                //mesh.enabled = false;
             }
+
+            coin.transform.position = new Vector3(7, -0.7f, 0); //puts the coin back in it's starting position
+
+            mesh = selectedPiece.GetComponent<MeshCollider>();
+            Debug.Log("Mesh to BRRRRRRRRRRRRR");
+            mesh.enabled = false;
         }
     }
     private void TryMove(int x1, int y1, int x2, int y2)
@@ -165,10 +174,10 @@ public class CheckersBaordScript : MonoBehaviour
         endDrag = new Vector2(x2, y2);
         selectedPiece = pieces[x1, y1];
 
-        Rigidbody rig = selectedPiece.GetComponent<Rigidbody>();
+        //Rigidbody rig = selectedPiece.GetComponent<Rigidbody>();
         //rig.isKinematic = false;
 
-        MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
+        //MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
         mesh.enabled = true;
 
         if (x2 < 0 || x2 >= 8 || y2 < 0 || y2 >= 8) //Checks if out of bounds
@@ -273,11 +282,12 @@ public class CheckersBaordScript : MonoBehaviour
         if (ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasChallenged)
             return;
 
-        coin.transform.position = new Vector3(7, -0.7f, 0); //puts the coin back in it's starting position
+        
 
         isWhiteTurn = !isWhiteTurn;
         isWhite = !isWhite;
         hasChallenged = false;
+
         if (isWhiteTurn)
         {
             //Shows White turn
@@ -290,6 +300,7 @@ public class CheckersBaordScript : MonoBehaviour
             whiteText.SetActive(false);
             blackText.SetActive(true);
         }
+
         
     }
     private void CheckVictory()

@@ -19,5 +19,7 @@ public class TailsScript : MonoBehaviour
         coin.transform.GetChild(0).gameObject.SetActive(false);
         coin.transform.GetChild(1).gameObject.SetActive(false);
         board.coinFlipping = false;
+
+        //coin.transform.position = new Vector3(7, -0.7f, 0); //puts the coin back in it's starting position
     }
 }

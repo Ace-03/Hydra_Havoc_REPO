@@ -16,7 +16,7 @@ public class CoinController : MonoBehaviour
 
     public void Toss()
     {
-        coin.transform.position = new Vector3(7, 1f, 0);
+        coin.transform.position = new Vector3(0f, 3f, 0);
 
         int jumpForce = Random.Range(500, 900);
         rb.AddForce(0, jumpForce, 0);
