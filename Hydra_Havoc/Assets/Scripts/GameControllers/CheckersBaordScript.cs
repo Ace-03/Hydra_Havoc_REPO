@@ -15,19 +15,20 @@ using UnityEngine.UI;
 public class CheckersBaordScript : MonoBehaviour
 {
     public PieceScript[,] pieces = new PieceScript[8, 8];
+    public PieceScript[,] tempPieces = new PieceScript[8, 8];
     public PieceScript PIECE;
     public PieceScript pieceLight;
 
+    public CreatePieces create;
+    public ScanPieces scan;
+    public PieceVictory victory;
+
     public CoinController coin;
 
-    public GameObject whitePiecePrefab;
-    public GameObject blackPiecePrefab;
     public GameObject headsText;
     public GameObject tailsText;
     public GameObject whiteText;
     public GameObject blackText;
-    public GameObject whiteWin;
-    public GameObject blackWin;
 
     public MeshCollider mesh;
 
@@ -39,7 +40,7 @@ public class CheckersBaordScript : MonoBehaviour
     public bool isWhite; //might not need this variable
     public bool isWhiteTurn;
     public  bool hasChallenged;
-    private bool hasWinner;
+    
     public bool lightOn;
     public bool heads;
     public bool tails;
@@ -49,7 +50,7 @@ public class CheckersBaordScript : MonoBehaviour
     public float delay = 3f;
 
     private PieceScript selectedPiece;
-    private List<PieceScript> forcedPieces;
+    public List<PieceScript> forcedPieces;
 
     private Vector2 mouseOver;
     private Vector2 startDrag;
@@ -61,15 +62,19 @@ public class CheckersBaordScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        create = gameObject.GetComponent<CreatePieces>();
+        victory = gameObject.GetComponent<PieceVictory>();
+        scan = gameObject.GetComponent<ScanPieces>();
+
         isWhiteTurn = true;
         forcedPieces = new List<PieceScript>();
-        GenerateBaord();
+        create.Board();
     }
 
     private void Update()
     {
         UpdateMouseOver();
-        CheckVictory();
+        victory.CheckVictory();
         //Debug.Log(mouseOver);
 
         if (((isWhite) ? isWhiteTurn : !isWhiteTurn) && !flipButton.interactable && !coinFlipping)
@@ -124,8 +129,6 @@ public class CheckersBaordScript : MonoBehaviour
 
     }
 
-
-
     private void SelectPiece(int x, int y)
     { 
         if(x < 0 || x > 8 || y  < 0 || y > 8)
@@ -160,14 +163,16 @@ public class CheckersBaordScript : MonoBehaviour
 
             coin.transform.position = new Vector3(7, -0.7f, 0); //puts the coin back in it's starting position
 
+
+
             mesh = selectedPiece.GetComponent<MeshCollider>();
-            Debug.Log("Mesh to BRRRRRRRRRRRRR");
+            //Debug.Log("Mesh to BRRRRRRRRRRRRR");
             mesh.enabled = false;
         }
     }
     private void TryMove(int x1, int y1, int x2, int y2)
     {
-        forcedPieces = ScanForPossibleMove();
+        forcedPieces = scan.ScanForPossibleMove();
 
         //Might remove later
         startDrag = new Vector2(x1, y1);
@@ -211,7 +216,7 @@ public class CheckersBaordScript : MonoBehaviour
 
                     if (p != null)
                     {
-                        Debug.Log("Moved Piece");
+                        //Debug.Log("Moved Piece");
                         MovePiece(selectedPiece, x1, y1);
                         pieces[x2, y2] = selectedPiece;
                         hasChallenged = true;
@@ -279,7 +284,7 @@ public class CheckersBaordScript : MonoBehaviour
                         //lightOn = false;
                     }
         //Debug.Log("Possible moves check: " + (ScanForPossibleMove(selectedPiece, x, y).Count) + " " + hasChallenged);
-        if (ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasChallenged)
+        if (scan.ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasChallenged)
             return;
 
         
@@ -287,6 +292,8 @@ public class CheckersBaordScript : MonoBehaviour
         isWhiteTurn = !isWhiteTurn;
         isWhite = !isWhite;
         hasChallenged = false;
+
+
 
         if (isWhiteTurn)
         {
@@ -303,47 +310,7 @@ public class CheckersBaordScript : MonoBehaviour
 
         
     }
-    private void CheckVictory()
-    {
-        var ps = FindObjectsOfType<PieceScript>();
-        bool hasWhite = false, hasBlack = false;
-        for (int i = 0; i < ps.Length; i++)
-        {
-            //Debug.Log("checking for victory");
-            if (ps[i].isWhite)
-            {
-                //Debug.Log("Check Here");
-                hasWhite = true;
-            }
-            else
-            {
-                //Debug.Log("Checked Here too");
-                hasBlack = true;
-            }
-        }
-
-        if (!hasWhite)
-        {
-            Victory(false);
-        }
-        if (!hasBlack)
-        {
-            Victory(true);
-        }
-    }
-    private void Victory(bool isWhite)
-    {
-        if (!hasWinner)
-        {
-            if (isWhite)
-                whiteWin.SetActive(true);
-            else
-                blackWin.SetActive(true);
-
-            hasWinner = true;
-        }
-        
-    }
+  
     public void Challenge()//PieceScript p, PieceScript[,] piece)
     {
         if (heads)
@@ -353,7 +320,7 @@ public class CheckersBaordScript : MonoBehaviour
             tailsText.SetActive(false);
             //hasChallenged = true;
             //Debug.Log("Add piece");
-            AddBounusPiece(pieces);
+            create.BounusPiece(pieces);
         }
         else if(tails)
         {
@@ -378,107 +345,8 @@ public class CheckersBaordScript : MonoBehaviour
         flipButton.interactable = false;
     }
 
-    private List<PieceScript> ScanForPossibleMove(PieceScript p, int x, int y)
-    {
-        forcedPieces = new List<PieceScript>();
-
-        if (pieces[x,y].IsForcedToMove(pieces, x, y))
-            forcedPieces.Add(pieces[x,y]);
-
-        //Debug.Log("Counter here = " + forcedPieces.Count);
-        return forcedPieces;
-    }
-    private List<PieceScript> ScanForPossibleMove()
-    {
-        forcedPieces = new List<PieceScript>();
-
-
-        // Check all the pieces
-        for (int i = 0; i < 8; i++) // Would have to chnage the "8" if the board size changes
-            for (int j = 0; j < 8; j++)
-                if (pieces[i, j] != null && pieces[i, j].isWhite == isWhiteTurn)
-                {
-                    if (pieces[i, j].IsForcedToMove(pieces, i, j))
-                    {
-                        forcedPieces.Add(pieces[i, j]);
-                        forcedPieces[0].transform.GetChild(0).gameObject.SetActive(true);
-                    }
-                }
-        return forcedPieces;
-    }
-
-
-    private void GenerateBaord()
-    { 
-        //Generate White Side
-        for(int y = 0; y < 3; y++) // change back to y < 3 later
-        { 
-            bool oddRow = (y % 2 == 0);
-            for (int x = 0; x < 8; x += 2) 
-            { 
-                GeneratePiece((oddRow) ? x : x+1, y);
-            }
-        }
-
-        //Generate Black Side
-        for (int y = 7; y > 4; y--)
-        {
-            bool oddRow = (y % 2 == 0);
-            for (int x = 0; x < 8; x += 2)
-            {
-                GeneratePiece((oddRow) ? x : x + 1, y);
-            }
-        }
-    }
-    private void GeneratePiece(int x, int y)
-    { 
-        //Generates Pieces
-        bool isPieceWhite = (y > 3) ? false : true;
-        GameObject go = Instantiate((isPieceWhite) ? whitePiecePrefab : blackPiecePrefab) as GameObject;
-        go.transform.SetParent(transform);
-        PieceScript p = go.GetComponent<PieceScript>();
-        pieces[x, y] = p;
-        MovePiece(p, x, y);
-    }
-    private void AddBounusPiece(PieceScript[,] piece)
-    {
-        //check if opponets botton-most left-most space is open
-        //keep moving up in space untill an open space if found
-        //then GeratePiece(location of oppents first open space)
-        if (isWhiteTurn)
-        {
-            for (int y = 0; y < 3; y++)
-            {
-                bool oddRow = (y % 2 == 0);
-                for (int x = 0; x < 8; x += 2)
-                {
-                    //Debug.Log(piece[x, y]);
-                    if (pieces[(oddRow) ? x : x + 1, y] == null)
-                    {
-                        GeneratePiece((oddRow) ? x : x + 1, y);
-                        return;
-                    }
-                }
-            }
-        }
-        else
-        {
-            for (int y = 7; y > 4; y--)
-            {
-                bool oddRow = (y % 2 == 0);
-                for (int x = 0; x < 8; x += 2)
-                {
-                    //Debug.Log(piece[x, y]);
-                    if (pieces[(oddRow) ? x : x + 1, y] == null)
-                    {
-                        GeneratePiece((oddRow) ? x : x + 1, y);
-                        return;
-                    }
-                }
-            }
-        }
-    }
-    private void MovePiece(PieceScript p, int x, int y)
+  
+    public void MovePiece(PieceScript p, int x, int y)
     { 
         //Movies pieces and keeps it in the center of it's square
         p.transform.position = (Vector3.right * x * 1f) + (Vector3.up) + (Vector3.forward * y * 1f) + boardOffset + pieceOffset;

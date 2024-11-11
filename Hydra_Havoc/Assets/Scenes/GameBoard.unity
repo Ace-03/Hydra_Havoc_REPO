@@ -3710,7 +3710,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7bcc679a485dcc54a8a574679f98b5a4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071067
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7bcc679a485dcc54a8a574679f98b5a4, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3722,11 +3722,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7bcc679a485dcc54a8a574679f98b5a4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7bcc679a485dcc54a8a574679f98b5a4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7bcc679a485dcc54a8a574679f98b5a4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -5639,6 +5639,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1340740367}
   - component: {fileID: 1340740368}
+  - component: {fileID: 1340740369}
+  - component: {fileID: 1340740370}
+  - component: {fileID: 1340740371}
   m_Layer: 0
   m_Name: Board_Controler
   m_TagString: Untagged
@@ -5677,15 +5680,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PIECE: {fileID: 0}
   pieceLight: {fileID: 0}
+  create: {fileID: 0}
+  scan: {fileID: 0}
+  victory: {fileID: 0}
   coin: {fileID: 401555458}
-  whitePiecePrefab: {fileID: 9005660390136780635, guid: 6a10e2dc98e61064582af49d00ce1a8d, type: 3}
-  blackPiecePrefab: {fileID: 3898452661496555600, guid: a2911c7599a607844a309840ab3c0a26, type: 3}
   headsText: {fileID: 666944663}
   tailsText: {fileID: 506941742}
   whiteText: {fileID: 1271054468}
   blackText: {fileID: 2096291734}
-  whiteWin: {fileID: 637896143}
-  blackWin: {fileID: 1502722316}
+  mesh: {fileID: 0}
   flipButton: {fileID: 164870759}
   isWhite: 1
   isWhiteTurn: 0
@@ -5696,6 +5699,49 @@ MonoBehaviour:
   coinFlipping: 0
   forcedMoveActive: 1
   delay: 3
+  forcedPieces: []
+--- !u!114 &1340740369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340740366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953090802d1a281468c2adac93ccc877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whitePiecePrefab: {fileID: 9005660390136780635, guid: 6a10e2dc98e61064582af49d00ce1a8d, type: 3}
+  blackPiecePrefab: {fileID: 3898452661496555600, guid: a2911c7599a607844a309840ab3c0a26, type: 3}
+--- !u!114 &1340740370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340740366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6587ab03ecf2e8f499e601df5c2b5175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  board: {fileID: 0}
+  hasWinner: 0
+  whiteWin: {fileID: 637896143}
+  blackWin: {fileID: 1502722316}
+--- !u!114 &1340740371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340740366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c0df55c7264c6f47a129e430bc09bd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1347002439
 GameObject:
   m_ObjectHideFlags: 0
