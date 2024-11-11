@@ -50,7 +50,7 @@ public class CheckersBaordScript : MonoBehaviour
     public float delay = 3f;
 
     private PieceScript selectedPiece;
-    public List<PieceScript> forcedPieces;
+ 
 
     private Vector2 mouseOver;
     private Vector2 startDrag;
@@ -67,7 +67,7 @@ public class CheckersBaordScript : MonoBehaviour
         scan = gameObject.GetComponent<ScanPieces>();
 
         isWhiteTurn = true;
-        forcedPieces = new List<PieceScript>();
+        
         create.Board();
     }
 
@@ -137,7 +137,7 @@ public class CheckersBaordScript : MonoBehaviour
         PieceScript p = pieces[x, y];
         if (p != null && p.isWhite == isWhite)
         {
-            if (forcedPieces.Count == 0 || !forcedMoveActive)
+            if (scan.forcedPieces.Count == 0 || !forcedMoveActive)
             {
                 selectedPiece = p;
                 startDrag = mouseOver;
@@ -150,7 +150,7 @@ public class CheckersBaordScript : MonoBehaviour
             else
             {
                 // Look for the piece in our forced pieces list
-                if (forcedPieces.Find(fp => fp == p) == null)
+                if (scan.forcedPieces.Find(fp => fp == p) == null)
                     return;
 
                 selectedPiece = p;
@@ -172,7 +172,7 @@ public class CheckersBaordScript : MonoBehaviour
     }
     private void TryMove(int x1, int y1, int x2, int y2)
     {
-        forcedPieces = scan.ScanForPossibleMove();
+        scan.forcedPieces = scan.ScanForPossibleMove();
 
         //Might remove later
         startDrag = new Vector2(x1, y1);
@@ -311,15 +311,13 @@ public class CheckersBaordScript : MonoBehaviour
         
     }
   
-    public void Challenge()//PieceScript p, PieceScript[,] piece)
+    public void Challenge()
     {
         if (heads)
         {
             //Shows heads text
             headsText.SetActive(true);
             tailsText.SetActive(false);
-            //hasChallenged = true;
-            //Debug.Log("Add piece");
             create.BounusPiece(pieces);
         }
         else if(tails)
@@ -327,11 +325,8 @@ public class CheckersBaordScript : MonoBehaviour
             //Shows tails text
             headsText.SetActive(false);
             tailsText.SetActive(true);
-            //remove oppents piece
-            //Debug.Log("Desotry Piece");
-            Destroy(PIECE.gameObject);
+            Destroy(PIECE.gameObject);//remove oppents piece
             PIECE = null;
-            //hasChallenged = true;
         }
 
         

@@ -6,24 +6,28 @@ public class ScanPieces : MonoBehaviour
 {
     CheckersBaordScript board;
 
+    public List<PieceScript> forcedPieces;
+
     private void Start()
     {
         board = gameObject.GetComponent<CheckersBaordScript>();
+
+        forcedPieces = new List<PieceScript>();
     }
 
     public List<PieceScript> ScanForPossibleMove(PieceScript p, int x, int y)
     {
-        board.forcedPieces = new List<PieceScript>();
+        forcedPieces = new List<PieceScript>();
 
         if (board.pieces[x, y].IsForcedToMove(board.pieces, x, y))
-            board.forcedPieces.Add(board.pieces[x, y]);
+            forcedPieces.Add(board.pieces[x, y]);
 
         //Debug.Log("Counter here = " + forcedPieces.Count);
-        return board.forcedPieces;
+        return forcedPieces;
     }
     public List<PieceScript> ScanForPossibleMove()
     {
-        board.forcedPieces = new List<PieceScript>();
+        forcedPieces = new List<PieceScript>();
 
 
         // Check all the pieces
@@ -33,11 +37,11 @@ public class ScanPieces : MonoBehaviour
                 {
                     if (board.pieces[i, j].IsForcedToMove(board.pieces, i, j))
                     {
-                        board.forcedPieces.Add(board.pieces[i, j]);
-                        board.forcedPieces[0].transform.GetChild(0).gameObject.SetActive(true);
+                        forcedPieces.Add(board.pieces[i, j]);
+                        forcedPieces[0].transform.GetChild(0).gameObject.SetActive(true);
                     }
                 }
-        return board.forcedPieces;
+        return forcedPieces;
     }
 
 }
