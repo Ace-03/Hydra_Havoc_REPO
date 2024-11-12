@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CreatePieces : MonoBehaviour
 {
-    CheckersBaordScript board;
+    public CheckersBaordScript board;
+    public TryMoving move;
 
     public GameObject whitePiecePrefab;
     public GameObject blackPiecePrefab;
@@ -12,6 +13,7 @@ public class CreatePieces : MonoBehaviour
     private void Start()
     {
         board = gameObject.GetComponent<CheckersBaordScript>();
+        move = gameObject.GetComponent<TryMoving>();
     }
 
     public void Board()
@@ -83,7 +85,8 @@ public class CreatePieces : MonoBehaviour
         GameObject go = Instantiate((isPieceWhite) ? whitePiecePrefab : blackPiecePrefab) as GameObject;
         go.transform.SetParent(transform);
         PieceScript p = go.GetComponent<PieceScript>();
+        Debug.Log(move);
         board.pieces[x, y] = p;
-        board.MovePiece(p, x, y);
+        move.MovePiece(p, x, y);
     }
 }

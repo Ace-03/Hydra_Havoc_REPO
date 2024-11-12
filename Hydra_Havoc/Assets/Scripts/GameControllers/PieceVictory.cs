@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PieceVictory : MonoBehaviour
 {
-    public CheckersBaordScript board;
+    //public CheckersBaordScript board;
 
     public bool hasWinner;
 
@@ -14,7 +14,7 @@ public class PieceVictory : MonoBehaviour
 
     private void Start()
     {
-        board = gameObject.GetComponent<CheckersBaordScript>();
+        //board = gameObject.GetComponent<CheckersBaordScript>();
     }
 
     public void CheckVictory()

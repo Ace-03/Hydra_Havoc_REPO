@@ -19,9 +19,12 @@ public class CheckersBaordScript : MonoBehaviour
     public PieceScript PIECE;
     public PieceScript pieceLight;
 
+    public PieceScript selectedPiece;
+
     public CreatePieces create;
     public ScanPieces scan;
     public PieceVictory victory;
+    public TryMoving move;
 
     public CoinController coin;
 
@@ -34,8 +37,7 @@ public class CheckersBaordScript : MonoBehaviour
 
     public Button flipButton;
 
-    private Vector3 boardOffset = new Vector3(-4f, -0.7f, -4f);
-    private Vector3 pieceOffset = new Vector3(0.5f, 0, .5f);
+
 
     public bool isWhite; //might not need this variable
     public bool isWhiteTurn;
@@ -49,12 +51,11 @@ public class CheckersBaordScript : MonoBehaviour
 
     public float delay = 3f;
 
-    private PieceScript selectedPiece;
+ 
  
 
     private Vector2 mouseOver;
-    private Vector2 startDrag;
-    private Vector2 endDrag;
+ 
 
 
     private GameObject focedToMove;
@@ -65,6 +66,7 @@ public class CheckersBaordScript : MonoBehaviour
         create = gameObject.GetComponent<CreatePieces>();
         victory = gameObject.GetComponent<PieceVictory>();
         scan = gameObject.GetComponent<ScanPieces>();
+        move = gameObject.GetComponent<TryMoving>();
 
         isWhiteTurn = true;
         
@@ -75,7 +77,6 @@ public class CheckersBaordScript : MonoBehaviour
     {
         UpdateMouseOver();
         victory.CheckVictory();
-        //Debug.Log(mouseOver);
 
         if (((isWhite) ? isWhiteTurn : !isWhiteTurn) && !flipButton.interactable && !coinFlipping)
         {
@@ -89,10 +90,10 @@ public class CheckersBaordScript : MonoBehaviour
                 SelectPiece(x, y);
 
             if (Input.GetMouseButtonUp(0))
-                TryMove((int)startDrag.x, (int)startDrag.y, x, y);
+                move.TryMove((int)move.startDrag.x, (int)move.startDrag.y, x, y);
         }
     }
-    private void UpdateMouseOver() 
+    private void UpdateMouseOver() //could be moved to TryMoving script
     {
         if (!Camera.main)
         {
@@ -103,8 +104,8 @@ public class CheckersBaordScript : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 25, LayerMask.GetMask("Board") ) )
         {
-            mouseOver.x = (int)(hit.point.x - boardOffset.x);
-            mouseOver.y = (int)(hit.point.z - boardOffset.z);
+            mouseOver.x = (int)(hit.point.x - move.boardOffset.x);
+            mouseOver.y = (int)(hit.point.z - move.boardOffset.z);
         }
         else
         {
@@ -140,12 +141,9 @@ public class CheckersBaordScript : MonoBehaviour
             if (scan.forcedPieces.Count == 0 || !forcedMoveActive)
             {
                 selectedPiece = p;
-                startDrag = mouseOver;
+                move.startDrag = mouseOver;
 
-                //MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
-                //mesh.enabled = false;
 
-                //Debug.Log(selectedPiece.name);
             }
             else
             {
@@ -154,11 +152,10 @@ public class CheckersBaordScript : MonoBehaviour
                     return;
 
                 selectedPiece = p;
-                startDrag = mouseOver;
+                move.startDrag = mouseOver;
 
 
-                //MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
-                //mesh.enabled = false;
+
             }
 
             coin.transform.position = new Vector3(7, -0.7f, 0); //puts the coin back in it's starting position
@@ -166,95 +163,14 @@ public class CheckersBaordScript : MonoBehaviour
 
 
             mesh = selectedPiece.GetComponent<MeshCollider>();
-            //Debug.Log("Mesh to BRRRRRRRRRRRRR");
             mesh.enabled = false;
         }
     }
-    private void TryMove(int x1, int y1, int x2, int y2)
+  
+    public void EndTurn()
     {
-        scan.forcedPieces = scan.ScanForPossibleMove();
-
-        //Might remove later
-        startDrag = new Vector2(x1, y1);
-        endDrag = new Vector2(x2, y2);
-        selectedPiece = pieces[x1, y1];
-
-        //Rigidbody rig = selectedPiece.GetComponent<Rigidbody>();
-        //rig.isKinematic = false;
-
-        //MeshCollider mesh = selectedPiece.GetComponent<MeshCollider>();
-        mesh.enabled = true;
-
-        if (x2 < 0 || x2 >= 8 || y2 < 0 || y2 >= 8) //Checks if out of bounds
-        {
-            if (selectedPiece != null)
-                MovePiece(selectedPiece, x1, y1);
-
-            startDrag = Vector2.zero;
-            selectedPiece = null;
-            return;
-        }
-
-        if(selectedPiece != null) 
-        { 
-            if(endDrag == startDrag) //Checks if piece has not moved
-            { 
-                MovePiece(selectedPiece, x1, y1);
-                startDrag = Vector2.zero;
-                selectedPiece = null;
-                return;
-            }
-
-            //Checks if piece as made a valid move
-            if (selectedPiece.ValidMove(pieces, x1, y1, x2, y2))
-            {
-                //Check if we challenged anything
-                if (MathF.Abs(x2 - x1) == 2) //if the change in the x value is great then 2, then we challanged something 
-                {
-                    PieceScript p = pieces[(x1 + x2) / 2, (y1 + y2) / 2]; //this puts the piece we jumped over into it's own variable
-                    PIECE = p;
-
-                    if (p != null)
-                    {
-                        //Debug.Log("Moved Piece");
-                        MovePiece(selectedPiece, x1, y1);
-                        pieces[x2, y2] = selectedPiece;
-                        hasChallenged = true;
-                        flipButton.interactable = true;
-                    }
-                }
-
-                /* This is a check to see if forced move should have happened
-                 * but it seems to be uncessisary now
-                if (forcedPieces.Count != 0 && !hasChallenged) // Were we supposed to challenge a piece?
-                {
-                    Debug.Log("Moved this piece");
-                    MovePiece(selectedPiece, x1, y1); //This block of code gets repated a lot
-                    startDrag = Vector2.zero;         //Should propably fix that later
-                    selectedPiece = null;
-                    return;
-                }
-                */
-
-                pieces[x2, y2] = selectedPiece;
-                pieces[x1, y1] = null;
-                MovePiece(selectedPiece, x2, y2);
-
-                EndTurn();
-            }
-            else 
-            {
-                MovePiece(selectedPiece, x1, y1);
-                startDrag = Vector2.zero;
-                selectedPiece = null;
-                return;
-            }
-        }
-    }
-    private void EndTurn()
-    {
-        int x = (int)endDrag.x;
-        int y = (int)endDrag.y;
+        int x = (int)move.endDrag.x;
+        int y = (int)move.endDrag.y;
 
         //Promotes Pieces
         if(selectedPiece != null) 
@@ -272,7 +188,7 @@ public class CheckersBaordScript : MonoBehaviour
         }
 
         selectedPiece = null;
-        startDrag = Vector2.zero;
+        move.startDrag = Vector2.zero;
 
 
         for (int i = 0; i < 8; i++) // Checks entire array of pieces and turns off all there lights
@@ -339,13 +255,4 @@ public class CheckersBaordScript : MonoBehaviour
         coinFlipping = true;
         flipButton.interactable = false;
     }
-
-  
-    public void MovePiece(PieceScript p, int x, int y)
-    { 
-        //Movies pieces and keeps it in the center of it's square
-        p.transform.position = (Vector3.right * x * 1f) + (Vector3.up) + (Vector3.forward * y * 1f) + boardOffset + pieceOffset;
-    }
-
-    
 }
