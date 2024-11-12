@@ -71,18 +71,6 @@ public class TryMoving : MonoBehaviour
                     }
                 }
 
-                /* This is a check to see if forced move should have happened
-                 * but it seems to be uncessisary now
-                if (forcedPieces.Count != 0 && !hasChallenged) // Were we supposed to challenge a piece?
-                {
-                    Debug.Log("Moved this piece");
-                    MovePiece(selectedPiece, x1, y1); //This block of code gets repated a lot
-                    startDrag = Vector2.zero;         //Should propably fix that later
-                    selectedPiece = null;
-                    return;
-                }
-                */
-
                 board.pieces[x2, y2] = board.selectedPiece;
                 board.pieces[x1, y1] = null;
                 MovePiece(board.selectedPiece, x2, y2);
