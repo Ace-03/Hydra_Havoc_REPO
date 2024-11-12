@@ -5642,6 +5642,7 @@ GameObject:
   - component: {fileID: 1340740369}
   - component: {fileID: 1340740370}
   - component: {fileID: 1340740371}
+  - component: {fileID: 1340740372}
   m_Layer: 0
   m_Name: Board_Controler
   m_TagString: Untagged
@@ -5680,16 +5681,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PIECE: {fileID: 0}
   pieceLight: {fileID: 0}
+  selectedPiece: {fileID: 0}
   create: {fileID: 0}
   scan: {fileID: 0}
   victory: {fileID: 0}
+  move: {fileID: 0}
   coin: {fileID: 401555458}
+  mesh: {fileID: 0}
+  flipButton: {fileID: 164870759}
   headsText: {fileID: 666944663}
   tailsText: {fileID: 506941742}
   whiteText: {fileID: 1271054468}
   blackText: {fileID: 2096291734}
-  mesh: {fileID: 0}
-  flipButton: {fileID: 164870759}
   isWhite: 1
   isWhiteTurn: 0
   hasChallenged: 0
@@ -5699,7 +5702,6 @@ MonoBehaviour:
   coinFlipping: 0
   forcedMoveActive: 1
   delay: 3
-  forcedPieces: []
 --- !u!114 &1340740369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5712,6 +5714,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953090802d1a281468c2adac93ccc877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  board: {fileID: 1340740368}
+  move: {fileID: 1340740372}
   whitePiecePrefab: {fileID: 9005660390136780635, guid: 6a10e2dc98e61064582af49d00ce1a8d, type: 3}
   blackPiecePrefab: {fileID: 3898452661496555600, guid: a2911c7599a607844a309840ab3c0a26, type: 3}
 --- !u!114 &1340740370
@@ -5726,7 +5730,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6587ab03ecf2e8f499e601df5c2b5175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board: {fileID: 0}
   hasWinner: 0
   whiteWin: {fileID: 637896143}
   blackWin: {fileID: 1502722316}
@@ -5742,6 +5745,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c0df55c7264c6f47a129e430bc09bd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forcedPieces: []
+--- !u!114 &1340740372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340740366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c63c4c4f8dc3d146937f9588a771165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scan: {fileID: 0}
+  board: {fileID: 0}
+  startDrag: {x: 0, y: 0}
+  endDrag: {x: 0, y: 0}
+  boardOffset: {x: -4, y: -0.7, z: -4}
+  pieceOffset: {x: 0.5, y: 0, z: 0.5}
 --- !u!1 &1347002439
 GameObject:
   m_ObjectHideFlags: 0

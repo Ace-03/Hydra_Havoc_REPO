@@ -6,7 +6,6 @@ using UnityEngine;
 public class TryMoving : MonoBehaviour
 {
     public ScanPieces scan;
-
     public CheckersBaordScript board;
 
     public Vector2 startDrag;
@@ -71,9 +70,9 @@ public class TryMoving : MonoBehaviour
                     }
                 }
 
+                MovePiece(board.selectedPiece, x2, y2);
                 board.pieces[x2, y2] = board.selectedPiece;
                 board.pieces[x1, y1] = null;
-                MovePiece(board.selectedPiece, x2, y2);
 
                 board.EndTurn();
             }

@@ -14,51 +14,53 @@ using UnityEngine.UI;
 
 public class CheckersBaordScript : MonoBehaviour
 {
+    /************************************************************************************/
+    //PieceScripts--------------------------------------------------
+    [Header("Piece Script Values")]
     public PieceScript[,] pieces = new PieceScript[8, 8];
     public PieceScript[,] tempPieces = new PieceScript[8, 8];
     public PieceScript PIECE;
     public PieceScript pieceLight;
-
     public PieceScript selectedPiece;
 
+    //Other Scripts--------------------------------------------------
+    [Header("Script References")]
     public CreatePieces create;
     public ScanPieces scan;
     public PieceVictory victory;
     public TryMoving move;
-
     public CoinController coin;
 
+    //Mesh------------------------------------------------------------
+    [Header("Meshes")]
+    public MeshCollider mesh;
+
+    //UI---------------------------------------------------------------
+    [Header("UI")]
+    public Button flipButton;
     public GameObject headsText;
     public GameObject tailsText;
     public GameObject whiteText;
     public GameObject blackText;
 
-    public MeshCollider mesh;
-
-    public Button flipButton;
-
-
-
+    //Bools------------------------------------------------------------
+    [Header("Bools")]
     public bool isWhite; //might not need this variable
     public bool isWhiteTurn;
-    public  bool hasChallenged;
-    
+    public bool hasChallenged;
     public bool lightOn;
     public bool heads;
     public bool tails;
     public bool coinFlipping;
     public bool forcedMoveActive = true;
 
+    //Others-----------------------------------------------------------
+    [Header("Other")]
     public float delay = 3f;
-
- 
- 
-
     private Vector2 mouseOver;
- 
+    /************************************************************************************/
 
-
-    private GameObject focedToMove;
+    //private GameObject focedToMove;
 
     // Start is called before the first frame update
     void Start()
