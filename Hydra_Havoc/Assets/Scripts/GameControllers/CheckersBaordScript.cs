@@ -80,7 +80,11 @@ public class CheckersBaordScript : MonoBehaviour
         UpdateMouseOver();
         victory.CheckVictory();
 
-        if (((isWhite) ? isWhiteTurn : !isWhiteTurn) && !flipButton.interactable && !coinFlipping)
+        bool shouldBeWhitesTurn = (isWhite) ? isWhiteTurn : !isWhiteTurn;
+        bool flipButtonNotInteractible = !flipButton.interactable;
+        bool coinNotFlipping = !coinFlipping;
+
+        if (/*shouldBeWhitesTurn &&*/ flipButtonNotInteractible && coinNotFlipping)
         {
             int x = (int)mouseOver.x;
             int y = (int)mouseOver.y;
@@ -103,11 +107,13 @@ public class CheckersBaordScript : MonoBehaviour
             return;
         }
 
-        RaycastHit hit;
-        if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 25, LayerMask.GetMask("Board") ) )
+        RaycastHit ray;
+        bool rayFromMouseHitBoard = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out ray, 25, LayerMask.GetMask("Board"));
+        
+        if (rayFromMouseHitBoard)
         {
-            mouseOver.x = (int)(hit.point.x - move.boardOffset.x);
-            mouseOver.y = (int)(hit.point.z - move.boardOffset.z);
+            mouseOver.x = (int)(ray.point.x - move.boardOffset.x);
+            mouseOver.y = (int)(ray.point.z - move.boardOffset.z);
         }
         else
         {
@@ -124,46 +130,46 @@ public class CheckersBaordScript : MonoBehaviour
             return;
         }
 
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 25, LayerMask.GetMask("Board")))
+
+        RaycastHit ray;
+        bool rayFromMouseHitBoard = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out ray, 25, LayerMask.GetMask("Board"));
+
+        if (rayFromMouseHitBoard)
         {
-            p.transform.position = hit.point + Vector3.up;
+            p.transform.position = ray.point + Vector3.up;
         }
 
     }
 
     private void SelectPiece(int x, int y)
-    { 
-        if(x < 0 || x > 8 || y  < 0 || y > 8)
+    {
+        bool outsideTheBoard = x < 0 || x > 8 || y < 0 || y > 8;
+        if (outsideTheBoard)
             return;
         
         PieceScript p = pieces[x, y];
-        if (p != null && p.isWhite == isWhite)
+        bool pieceExists = p != null;
+        bool isPieceTurn = p.isWhite == isWhiteTurn;
+
+        if (pieceExists && isPieceTurn)
         {
-            if (scan.forcedPieces.Count == 0 || !forcedMoveActive)
+            bool noPieceMustMove = scan.forcedPieces.Count == 0;
+            bool noForcedMoves = !forcedMoveActive;
+
+            if  (noPieceMustMove || noForcedMoves)
             {
                 selectedPiece = p;
                 move.startDrag = mouseOver;
-
-
             }
             else
             {
-                // Look for the piece in our forced pieces list
-                if (scan.forcedPieces.Find(fp => fp == p) == null)
+                if (scan.forcedPieces.Find(fp => fp == p) == null) // Look for the piece in our forced pieces list
                     return;
 
                 selectedPiece = p;
                 move.startDrag = mouseOver;
-
-
-
             }
-
             coin.transform.position = new Vector3(7, -0.7f, 0); //puts the coin back in it's starting position
-
-
-
             mesh = selectedPiece.GetComponent<MeshCollider>();
             mesh.enabled = false;
         }
