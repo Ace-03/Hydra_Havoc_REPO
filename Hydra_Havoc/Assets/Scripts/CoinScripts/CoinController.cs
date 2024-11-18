@@ -7,13 +7,6 @@ public class CoinController : MonoBehaviour
     public GameObject coin;
     public Rigidbody rb;
 
-    void Start()
-    {
-
-    }
-
-
-
     public void Toss()
     {
         coin.transform.position = new Vector3(0f, 3f, 0);
@@ -21,7 +14,6 @@ public class CoinController : MonoBehaviour
         int jumpForce = Random.Range(500, 900);
         rb.AddForce(0, jumpForce, 0);
 
-        //int torqx = Random.Range(0, 30);
         int torqy = Random.Range(90, 300);
         rb.AddTorque(0, 0, torqy);
 

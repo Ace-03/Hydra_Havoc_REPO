@@ -85,7 +85,7 @@ public class CreatePieces : MonoBehaviour
         GameObject go = Instantiate((isPieceWhite) ? whitePiecePrefab : blackPiecePrefab) as GameObject;
         go.transform.SetParent(transform);
         PieceScript p = go.GetComponent<PieceScript>();
-        Debug.Log(move);
+        //Debug.Log(move);
         board.pieces[x, y] = p;
         move.MovePiece(p, x, y);
     }
