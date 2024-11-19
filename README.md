@@ -1,6 +1,23 @@
 # Hydra_Havoc_REPO
 https://ace-03.github.io/Hydra_Havoc_REPO/
 ________________________________________________________________________________________________________________
+Hydra Havoc v0.09-
+________________________________________________________________________________________________________________
+New Features-
+
+    -Added Coin Collision
+
+    -Added Forced Moves Toggle
+
+    -Add Tutorial Button to Game Scene
+
+Known Bugs-
+
+    -(still) When a piece is in king mode and it can capture multiple pieces in one turn,
+     it does no get forced to caputre a piece on it's second hop and can move freely around the board.
+
+    -Sometime the wrong side gets a new piece when the coin lands on Heads
+________________________________________________________________________________________________________________
 Hydra Havoc v0.08-
 ________________________________________________________________________________________________________________
 New Features-
