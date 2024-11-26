@@ -18,7 +18,7 @@ public class CheckersBaordScript : MonoBehaviour
     //PieceScripts--------------------------------------------------
     [Header("Piece Script Values")]
     public PieceScript[,] pieces = new PieceScript[8, 8];
-    public PieceScript[,] tempPieces = new PieceScript[8, 8];
+    public PieceScript[,] tempPieces;//new PieceScript[8, 8];
     public PieceScript PIECE;
     public PieceScript pieceLight;
     public PieceScript selectedPiece;
@@ -156,7 +156,12 @@ public class CheckersBaordScript : MonoBehaviour
         bool outsideTheBoard = x < 0 || x > 8 || y < 0 || y > 8;
         if (outsideTheBoard)
             return;
+
+
+        coin.transform.position = new Vector3(7, -0.7f, 0); //puts the coin back in it's starting position so it dosen't collide with pieces
+        CorrectPieces();
         
+
         PieceScript p = pieces[x, y];
 
         bool pieceExists = p != null;
@@ -182,12 +187,12 @@ public class CheckersBaordScript : MonoBehaviour
                     selectedPiece = p;
                     move.startDrag = mouseOver;
                 }
-                coin.transform.position = new Vector3(7, -0.7f, 0); //puts the coin back in it's starting position
+                
                 mesh = selectedPiece.GetComponent<MeshCollider>();
                 mesh.enabled = false;
 
-                Debug.Log("Temp Set");
-                tempPieces = pieces;
+                //Debug.Log("Temp Set");
+                //tempPieces = pieces;
             }
         }
         
@@ -221,7 +226,7 @@ public class CheckersBaordScript : MonoBehaviour
             for (int j = 0; j < 8; j++)
                 if (pieces[i, j] != null && pieces[i, j].isWhite == isWhiteTurn)
                 {
-                    CorrectPieces(pieces[i, j], i, j);
+                    //CorrectPieces(pieces[i, j], i, j);
 
                     if (pieces[i, j].transform.GetChild(0).gameObject.active)
                     {
@@ -259,18 +264,45 @@ public class CheckersBaordScript : MonoBehaviour
         
     }
 
-    private void CorrectPieces(PieceScript piece, int x, int y)
+    private void CorrectPieces()//PieceScript piece, int x, int y)
     {
-        if (isWhiteTurn)
-        {
-            piece.transform.rotation = Quaternion.Euler(270, 0, 0);
-            piece.transform.position = new Vector3(tempPieces[x,y].transform.position.x, 1.5f, tempPieces[x,y].transform.position.z);
-        }
-        else
-            piece.transform.rotation = Quaternion.Euler(270, 0, 180);
+
+        for (int x = 0; x < 8; x++) // Checks entire array of pieces and turns off all there lights
+            for (int y = 0; y < 8; y++)
+            {
+                if (tempPieces != null)
+                {
+                    if(pieces[x, y] != null)
+                    {
+                        Debug.Log("Correted Pieces");
+                        
+                        if (pieces[x, y].isWhite)
+                        {
+                            pieces[x, y].transform.rotation = Quaternion.Euler(270, 0, 0);
+                        }
+                        else
+                        {
+                            pieces[x, y].transform.rotation = Quaternion.Euler(270, 0, 180);
+                        }
+                        pieces[x, y].transform.position = new Vector3(x, 1.437522f, y) + move.boardOffset + move.pieceOffset;
 
 
-
+                        /*
+                        if (isWhiteTurn)
+                        {
+                            pieces[x, y].transform.rotation = Quaternion.Euler(270, 0, 0);
+                            //pieces[x, y].transform.position = new Vector3(x, 1.5f, y) + move.boardOffset + move.pieceOffset; //new Vector3(tempPieces[x, y].transform.position.x, 1.5f, tempPieces[x, y].transform.position.z);
+                        }
+                        /*
+                        else
+                        {
+                            pieces[x, y].transform.rotation = Quaternion.Euler(270, 0, 180);
+                            pieces[x, y].transform.position = new Vector3(x, 1.5f, y) + move.boardOffset + move.pieceOffset; //new Vector3(tempPieces[x, y].transform.position.x, 1.5f, tempPieces[x, y].transform.position.z);
+                        }
+                        */
+                    }
+                }
+            }
         //pieces = tempPieces;
     }
 
@@ -295,10 +327,13 @@ public class CheckersBaordScript : MonoBehaviour
 
     public void FlipCoin()
     {
+        Debug.Log("Set temp");
+        tempPieces = pieces;
+
+
         coin.Toss();
+
         
-
-
         coinFlipping = true;
         flipButton.interactable = false;
     }

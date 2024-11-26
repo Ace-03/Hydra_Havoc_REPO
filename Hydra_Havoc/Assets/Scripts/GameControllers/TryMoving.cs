@@ -25,6 +25,8 @@ public class TryMoving : MonoBehaviour
     {
         scan.forcedPieces = scan.ScanForPossibleMove();
 
+        //bug.Log("Tried to move");
+
         //Might remove later
         startDrag = new Vector2(x1, y1);
         endDrag = new Vector2(x2, y2);
@@ -69,7 +71,6 @@ public class TryMoving : MonoBehaviour
                         board.flipButton.interactable = true;
                     }
                 }
-
                 MovePiece(board.selectedPiece, x2, y2);
                 board.pieces[x2, y2] = board.selectedPiece;
                 board.pieces[x1, y1] = null;
