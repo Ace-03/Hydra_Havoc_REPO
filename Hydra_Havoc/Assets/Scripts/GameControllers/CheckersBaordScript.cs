@@ -270,7 +270,7 @@ public class CheckersBaordScript : MonoBehaviour
         for (int x = 0; x < 8; x++) // Checks entire array of pieces and turns off all there lights
             for (int y = 0; y < 8; y++)
             {
-                if (tempPieces != null)
+                //if (tempPieces != null)
                 {
                     if(pieces[x, y] != null)
                     {
@@ -285,25 +285,9 @@ public class CheckersBaordScript : MonoBehaviour
                             pieces[x, y].transform.rotation = Quaternion.Euler(270, 0, 180);
                         }
                         pieces[x, y].transform.position = new Vector3(x, 1.437522f, y) + move.boardOffset + move.pieceOffset;
-
-
-                        /*
-                        if (isWhiteTurn)
-                        {
-                            pieces[x, y].transform.rotation = Quaternion.Euler(270, 0, 0);
-                            //pieces[x, y].transform.position = new Vector3(x, 1.5f, y) + move.boardOffset + move.pieceOffset; //new Vector3(tempPieces[x, y].transform.position.x, 1.5f, tempPieces[x, y].transform.position.z);
-                        }
-                        /*
-                        else
-                        {
-                            pieces[x, y].transform.rotation = Quaternion.Euler(270, 0, 180);
-                            pieces[x, y].transform.position = new Vector3(x, 1.5f, y) + move.boardOffset + move.pieceOffset; //new Vector3(tempPieces[x, y].transform.position.x, 1.5f, tempPieces[x, y].transform.position.z);
-                        }
-                        */
                     }
                 }
             }
-        //pieces = tempPieces;
     }
 
     public void Challenge()

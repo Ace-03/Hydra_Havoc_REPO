@@ -5,6 +5,7 @@ using UnityEngine;
 public class HeadsScript : MonoBehaviour
 {
     public CheckersBaordScript board;
+    public CameraController cameraController;
 
     public GameObject coin;
 
@@ -19,6 +20,8 @@ public class HeadsScript : MonoBehaviour
         coin.transform.GetChild(1).gameObject.SetActive(false);
         board.coinFlipping = false;
         board.Bounce();
+
+        cameraController.isShaking = true;
         //coin.transform.position = new Vector3(7, -0.7f, 0); //puts the coin back in it's starting position
     }
 }
