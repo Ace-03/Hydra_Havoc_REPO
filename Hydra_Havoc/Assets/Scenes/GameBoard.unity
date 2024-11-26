@@ -3048,6 +3048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   board: {fileID: 1340740368}
+  cameraController: {fileID: 2043888014}
   coin: {fileID: 401555452}
 --- !u!1 &710613987
 GameObject:
@@ -4351,6 +4352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   board: {fileID: 1340740368}
+  cameraController: {fileID: 2043888014}
   coin: {fileID: 401555452}
 --- !u!1 &1000326092
 GameObject:
@@ -8194,6 +8196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _board: {fileID: 1340740368}
   smoothFactor: 3
+  isShaking: 0
 --- !u!1 &2092084074 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2384918113936616510, guid: 2f544e3ec8f15ac4b8a44a13c5b5139b, type: 3}
