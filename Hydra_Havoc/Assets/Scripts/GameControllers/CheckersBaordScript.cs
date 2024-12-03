@@ -148,7 +148,7 @@ public class CheckersBaordScript : MonoBehaviour
     {
         //int bounceForce = UnityEngine.Random.Range(1000, 2000);
         Rigidbody bounceRB = Bouncer.GetComponent<Rigidbody>();
-        bounceRB.AddForce(0, 5000, 0);
+        bounceRB.AddForce(0, 4000, 0);
     }
     
     private void SelectPiece(int x, int y)
@@ -275,7 +275,8 @@ public class CheckersBaordScript : MonoBehaviour
                     if(pieces[x, y] != null)
                     {
                         Debug.Log("Correted Pieces");
-                        
+                        Rigidbody rb = pieces[x, y].GetComponent<Rigidbody>();
+                        rb.velocity = Vector3.zero;
                         if (pieces[x, y].isWhite)
                         {
                             pieces[x, y].transform.rotation = Quaternion.Euler(270, 0, 0);
@@ -284,7 +285,7 @@ public class CheckersBaordScript : MonoBehaviour
                         {
                             pieces[x, y].transform.rotation = Quaternion.Euler(270, 0, 180);
                         }
-                        pieces[x, y].transform.position = new Vector3(x, 1.437522f, y) + move.boardOffset + move.pieceOffset;
+                        pieces[x, y].transform.position = new Vector3(x, 1.437807f, y) + move.boardOffset + move.pieceOffset;
                     }
                 }
             }
