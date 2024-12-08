@@ -7,6 +7,8 @@ public class PieceScript : MonoBehaviour
     public bool isWhite;
     public bool isKing;
 
+
+
     public bool IsForcedToMove(PieceScript[,] board, int x, int y)
     {
         if (isWhite || isKing)
@@ -114,4 +116,6 @@ public class PieceScript : MonoBehaviour
         }
         return false;
     }
+
+  
 }

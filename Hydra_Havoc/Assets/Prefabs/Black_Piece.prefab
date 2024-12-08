@@ -206,6 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isWhite: 0
   isKing: 0
+  SFX_Piece: {fileID: 8315231604916106408, guid: 47670e14e12f7c145a79e532b9bebf99, type: 3}
 --- !u!64 &-6306278198481658947
 MeshCollider:
   m_ObjectHideFlags: 0

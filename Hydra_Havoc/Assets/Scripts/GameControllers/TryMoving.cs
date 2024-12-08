@@ -14,6 +14,8 @@ public class TryMoving : MonoBehaviour
     public Vector3 boardOffset = new Vector3(-4f, -0.7f, -4f);
     public Vector3 pieceOffset = new Vector3(0.5f, 0, .5f);
 
+    public AudioSource Piece_SFX;
+    float[] pitcheValues = new float[3] { 0.7f, 1f, 1.3f };
 
     private void Start()
     {
@@ -32,7 +34,8 @@ public class TryMoving : MonoBehaviour
         endDrag = new Vector2(x2, y2);
         board.selectedPiece = board.pieces[x1, y1];
 
-        board.mesh.enabled = true;
+        if(board.mesh != null)
+            board.mesh.enabled = true;
 
         if (x2 < 0 || x2 >= 8 || y2 < 0 || y2 >= 8) //Checks if out of bounds
         {
@@ -57,6 +60,8 @@ public class TryMoving : MonoBehaviour
             //Checks if piece as made a valid move
             if (board.selectedPiece.ValidMove(board.pieces, x1, y1, x2, y2))
             {
+                Piece_SFX.pitch = pitcheValues[UnityEngine.Random.Range(0,3)];
+                Piece_SFX.Play();
                 //Check if we challenged anything
                 if (MathF.Abs(x2 - x1) == 2) //if the change in the x value is great then 2, then we challanged something 
                 {
@@ -74,6 +79,8 @@ public class TryMoving : MonoBehaviour
                 MovePiece(board.selectedPiece, x2, y2);
                 board.pieces[x2, y2] = board.selectedPiece;
                 board.pieces[x1, y1] = null;
+
+                
 
                 board.EndTurn();
             }
